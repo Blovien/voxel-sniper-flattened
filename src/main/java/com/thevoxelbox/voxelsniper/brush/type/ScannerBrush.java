@@ -84,8 +84,7 @@ public class ScannerBrush extends AbstractBrush {
 			messenger.sendMessage(ChatColor.GRAY + "Nope.");
 		} else if (blockFace == BlockFace.SOUTH) {// Scan north
 			for (int i = 1; i < this.depth + 1; i++) {
-				if (this.clampY(targetBlock.getX() - i, targetBlock.getY(), targetBlock.getZ())
-					.getType() == this.checkFor) {
+				if (this.clampY(targetBlock.getX() - i, targetBlock.getY(), targetBlock.getZ()).getType() == this.checkFor) {
 					messenger.sendMessage(ChatColor.GREEN + String.valueOf(this.checkFor) + " found after " + i + " blocks.");
 					return;
 				}

@@ -26,6 +26,11 @@ public class MessageSender {
 		return this;
 	}
 
+	public MessageSender biomeNameMessage(String biomeName) {
+		this.messages.add(ChatColor.YELLOW + "Biome: " + ChatColor.GOLD + biomeName);
+		return this;
+	}
+
 	public MessageSender performerNameMessage(String performerName) {
 		this.messages.add(ChatColor.DARK_PURPLE + "Performer: " + ChatColor.DARK_GREEN + performerName);
 		return this;

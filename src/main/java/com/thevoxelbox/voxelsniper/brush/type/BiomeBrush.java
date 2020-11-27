@@ -24,7 +24,8 @@ public class BiomeBrush extends AbstractBrush {
 	public void handleCommand(String[] parameters, Snipe snipe) {
 		Sniper sniper = snipe.getSniper();
 		Player player = sniper.getPlayer();
-		String firstParameter = parameters[1];
+		snipe.getSniper().getPlayer().sendMessage(parameters);
+		String firstParameter = parameters[0];
 		if (firstParameter.equalsIgnoreCase("info")) {
 			Messages.send(player, ChatColor.GOLD + "Biome Brush Parameters:");
 			StringBuilder availableBiomes = new StringBuilder();
@@ -60,7 +61,6 @@ public class BiomeBrush extends AbstractBrush {
 		biome(snipe);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void biome(Snipe snipe) {
 		ToolkitProperties toolkitProperties = snipe.getToolkitProperties();
 		int brushSize = toolkitProperties.getBrushSize();
@@ -68,11 +68,11 @@ public class BiomeBrush extends AbstractBrush {
 		World world = getWorld();
 		Block targetBlock = getTargetBlock();
 		int targetBlockX = targetBlock.getX();
+		int targetBlockY = targetBlock.getY();
 		int targetBlockZ = targetBlock.getZ();
 		for (int x = -brushSize; x <= brushSize; x++) {
-			double xSquared = Math.pow(x, 2);
 			for (int z = -brushSize; z <= brushSize; z++) {
-				if (xSquared + Math.pow(z, 2) <= brushSizeSquared) {
+				if (x*x + z*z <= brushSizeSquared) {
 					world.setBiome(targetBlockX + x, targetBlockZ + z, this.selectedBiome);
 				}
 			}

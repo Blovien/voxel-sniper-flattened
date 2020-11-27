@@ -54,13 +54,13 @@ public class TreeSnipeBrush extends AbstractBrush {
 	}
 
 	private void single(Block targetBlock) {
-		UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
+		WorldDelegate worldDelegate = new WorldDelegate(targetBlock.getWorld());
 		Block blockBelow = targetBlock.getRelative(BlockFace.DOWN);
 		BlockState currentState = blockBelow.getState();
-		undoDelegate.setBlock(blockBelow);
+		worldDelegate.setBlock(blockBelow);
 		blockBelow.setType(Material.GRASS_BLOCK);
 		World world = getWorld();
-		world.generateTree(targetBlock.getLocation(), this.treeType, undoDelegate);
+		world.generateTree(targetBlock.getLocation(), this.treeType, worldDelegate);
 		blockBelow.setBlockData(currentState.getBlockData());
 	}
 
@@ -89,11 +89,11 @@ public class TreeSnipeBrush extends AbstractBrush {
 		messenger.sendMessage(printout);
 	}
 
-	private static final class UndoDelegate implements BlockChangeDelegate {
+	private static final class WorldDelegate implements BlockChangeDelegate {
 
 		private World targetWorld;
 
-		private UndoDelegate(World targetWorld) {
+		private WorldDelegate(World targetWorld) {
 			this.targetWorld = targetWorld;
 		}
 

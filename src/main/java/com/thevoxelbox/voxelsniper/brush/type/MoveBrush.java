@@ -1,5 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.thevoxelbox.voxelsniper.brush.property.BrushProperties;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
@@ -137,7 +138,6 @@ public class MoveBrush extends AbstractBrush {
 	 */
 	private void moveSelection(Snipe snipe, Selection selection, int[] direction) {
 		SnipeMessenger messenger = snipe.createMessenger();
-		Sniper sniper = snipe.getSniper();
 		List<BlockState> blockStates = selection.getBlockStates();
 		if (!blockStates.isEmpty()) {
 			BlockState firstState = blockStates.get(0);

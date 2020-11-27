@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,7 +52,6 @@ public class Sniper {
 	private UUID uuid;
 	private boolean enabled = true;
 	private int undoCacheSize;
-//	private Deque<Undo> undoList = new LinkedList<>(); //FAWE Removed
 	private List<Toolkit> toolkits = new ArrayList<>();
 
 	public Sniper(UUID uuid, int undoCacheSize) {

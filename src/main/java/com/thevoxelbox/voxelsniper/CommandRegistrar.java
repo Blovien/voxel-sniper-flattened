@@ -1,23 +1,7 @@
 package com.thevoxelbox.voxelsniper;
 
 import com.thevoxelbox.voxelsniper.command.CommandRegistry;
-import com.thevoxelbox.voxelsniper.command.executor.BrushExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.BrushToolkitExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.DefaultExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.GotoExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.PaintExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.PerformerExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.UndoExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.UndoUserExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelCenterExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelChunkExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelHeightExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelInkExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelInkReplaceExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelListExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelReplaceExecutor;
-import com.thevoxelbox.voxelsniper.command.executor.VoxelSniperExecutor;
+import com.thevoxelbox.voxelsniper.command.executor.*;
 import com.thevoxelbox.voxelsniper.command.property.CommandProperties;
 import org.bukkit.entity.Player;
 
@@ -49,6 +33,7 @@ public class CommandRegistrar {
 		registerUndoUserCommand();
 		registerVoxelCommand();
 		registerVoxelChunkCommand();
+		registerBiomeCommand();
 	}
 
 	private void registerBrushCommand() {
@@ -287,6 +272,20 @@ public class CommandRegistrar {
 			.sender(Player.class)
 			.build();
 		VoxelChunkExecutor executor = new VoxelChunkExecutor();
+		this.registry.register(properties, executor);
+	}
+
+	private void registerBiomeCommand() {
+		CommandProperties properties = CommandProperties.builder()
+			.name("biome")
+			.description("Biome input.")
+			.permission("voxelsniper.sniper")
+			.alias("bi")
+			.usage("/biome [biome_name]")
+			.usage("Example: /bi SAVANNA -- Loads the sniper with Savanna biome.")
+			.sender(Player.class)
+			.build();
+		BiomeExecutor executor = new BiomeExecutor(this.plugin);
 		this.registry.register(properties, executor);
 	}
 }

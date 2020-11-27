@@ -3,6 +3,7 @@ package com.thevoxelbox.voxelsniper.util.message;
 import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 
@@ -29,6 +30,10 @@ public class Messenger {
 
 	public void sendBlockTypeMessage(Material blockType) {
 		sendMessage(ChatColor.GOLD + "Voxel: " + ChatColor.RED + blockType.getKey());
+	}
+
+	public void sendBiomeNameMessage(Biome biome) {
+		sendMessage(ChatColor.YELLOW + "Biome: " + ChatColor.GOLD + biome.getKey());
 	}
 
 	public void sendBlockDataMessage(BlockData blockData) {

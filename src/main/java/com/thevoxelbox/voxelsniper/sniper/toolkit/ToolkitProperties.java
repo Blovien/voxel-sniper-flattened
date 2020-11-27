@@ -2,6 +2,7 @@ package com.thevoxelbox.voxelsniper.sniper.toolkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -17,9 +18,11 @@ public class ToolkitProperties {
 	private static final int DEFAULT_BRUSH_SIZE = 3;
 	private static final int DEFAULT_VOXEL_HEIGHT = 1;
 	private static final int DEFAULT_CYLINDER_CENTER = 0;
+	private static final Biome DEFAULT_BIOME = Biome.PLAINS;
 
 	private BlockData blockData;
 	private BlockData replaceBlockData;
+	private Biome biome;
 	private int brushSize;
 	private int voxelHeight;
 	private int cylinderCenter;
@@ -33,6 +36,7 @@ public class ToolkitProperties {
 		this.replaceBlockData = DEFAULT_REPLACE_BLOCK_MATERIAL.createBlockData();
 		this.brushSize = DEFAULT_BRUSH_SIZE;
 		this.voxelHeight = DEFAULT_VOXEL_HEIGHT;
+		this.biome = DEFAULT_BIOME;
 	}
 
 	public void reset() {
@@ -43,6 +47,7 @@ public class ToolkitProperties {
 		this.cylinderCenter = DEFAULT_CYLINDER_CENTER;
 		this.blockTracerRange = null;
 		this.lightningEnabled = false;
+		this.biome = DEFAULT_BIOME;
 		this.voxelList.clear();
 	}
 
@@ -146,6 +151,14 @@ public class ToolkitProperties {
 
 	public void setLightningEnabled(boolean lightningEnabled) {
 		this.lightningEnabled = lightningEnabled;
+	}
+
+	public void setBiome(Biome biome) {
+		this.biome = biome;
+	}
+
+	public Biome getBiome() {
+		return biome;
 	}
 
 	public List<BlockData> getVoxelList() {

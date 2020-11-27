@@ -4,6 +4,7 @@ import com.thevoxelbox.voxelsniper.brush.property.BrushProperties;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.MessageSender;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
@@ -30,6 +31,12 @@ public class SnipeMessageSender {
 	public SnipeMessageSender blockTypeMessage() {
 		Material blockType = this.toolkitProperties.getBlockType();
 		this.messageSender.blockTypeMessage(blockType);
+		return this;
+	}
+
+	public SnipeMessageSender biomeNameMessage() {
+		Biome biome = this.toolkitProperties.getBiome();
+		this.messageSender.biomeNameMessage(biome.name());
 		return this;
 	}
 

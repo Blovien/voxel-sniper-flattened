@@ -1,4 +1,4 @@
-package it.blovien.betterbrushes;
+package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.brush.type.ErodeBrush;

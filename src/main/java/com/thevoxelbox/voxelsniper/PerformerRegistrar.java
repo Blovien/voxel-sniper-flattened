@@ -2,6 +2,7 @@ package com.thevoxelbox.voxelsniper;
 
 import com.thevoxelbox.voxelsniper.performer.PerformerRegistry;
 import com.thevoxelbox.voxelsniper.performer.property.PerformerProperties;
+import com.thevoxelbox.voxelsniper.performer.type.biome.BiomePerformer;
 import com.thevoxelbox.voxelsniper.performer.type.combo.ComboComboNoPhysicsPerformer;
 import com.thevoxelbox.voxelsniper.performer.type.combo.ComboComboPerformer;
 import com.thevoxelbox.voxelsniper.performer.type.combo.ComboInkNoPhysicsPerformer;
@@ -55,6 +56,8 @@ public class PerformerRegistrar {
 		registerMaterialPerformers();
 		registerInkPerformers();
 		registerComboPerformers();
+
+		registerBiomePerformer();
 	}
 
 	private void registerMaterialPerformers() {
@@ -434,6 +437,16 @@ public class PerformerRegistrar {
 			.alias("nc")
 			.alias("include-combo")
 			.creator(IncludeComboPerformer::new)
+			.build();
+		this.registry.register(properties);
+	}
+
+	private void registerBiomePerformer() {
+		PerformerProperties properties = PerformerProperties.builder()
+			.name("Biome")
+			.alias("bi")
+			.alias("biome")
+			.creator(BiomePerformer::new)
 			.build();
 		this.registry.register(properties);
 	}

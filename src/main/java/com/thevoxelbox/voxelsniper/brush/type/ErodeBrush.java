@@ -209,7 +209,7 @@ public class ErodeBrush extends AbstractBrush {
 		messenger.sendMessage(ChatColor.DARK_GREEN + "Fill recursion amount set to " + this.currentPreset.getFillRecursion());
 	}
 
-	public enum Preset {
+	private enum Preset {
 
 		MELT("melt", new ErosionPreset(2, 1, 5, 1)),
 		FILL("fill", new ErosionPreset(5, 1, 2, 1)),
@@ -242,7 +242,7 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	public static final class BlockChangeTracker {
+	private static final class BlockChangeTracker {
 
 		private Map<Integer, Map<Vector, BlockWrapper>> blockChanges;
 		private Map<Vector, BlockWrapper> flatChanges;
@@ -287,7 +287,7 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	public static final class BlockWrapper {
+	private static final class BlockWrapper {
 
 		@Nullable
 		private Block block;
@@ -322,7 +322,7 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	public static final class ErosionPreset implements Serializable {
+	private static final class ErosionPreset implements Serializable {
 
 		private static final long serialVersionUID = 8997952776355430411L;
 

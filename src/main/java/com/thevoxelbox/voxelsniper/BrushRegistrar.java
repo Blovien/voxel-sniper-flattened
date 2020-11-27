@@ -79,7 +79,7 @@ import com.thevoxelbox.voxelsniper.brush.type.shell.ShellVoxelBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stamp.CloneStampBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stencil.StencilBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stencil.StencilListBrush;
-import it.blovien.betterbrushes.ErodeBlendBrush;
+import com.thevoxelbox.voxelsniper.brush.type.ErodeBlendBrush;
 
 import java.io.File;
 
