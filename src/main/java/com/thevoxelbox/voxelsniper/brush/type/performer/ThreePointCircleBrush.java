@@ -139,8 +139,6 @@ public class ThreePointCircleBrush extends AbstractPerformerBrush {
 			}
 		}
 		messenger.sendMessage(ChatColor.GREEN + "Done.");
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 		// Reset Brush
 		this.coordinatesOne = null;
 		this.coordinatesTwo = null;

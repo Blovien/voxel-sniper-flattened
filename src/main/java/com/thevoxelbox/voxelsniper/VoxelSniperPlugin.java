@@ -10,10 +10,16 @@ import com.thevoxelbox.voxelsniper.performer.PerformerRegistry;
 import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
 import com.thevoxelbox.voxelsniper.util.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.enginehub.piston.CommandManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -30,13 +36,20 @@ public class VoxelSniperPlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		PluginManager pluginManager = getServer().getPluginManager();
+		if (pluginManager.getPlugin("FastAsyncWorldEdit") == null) {
+				getLogger().info(ChatColor.RED + "[!] FastAsyncWorldEdit must be used. Disabling...");
+				pluginManager.disablePlugin(this);
+		}
+
 		this.voxelSniperConfig = loadConfig();
 		this.brushRegistry = loadBrushRegistry();
 		this.performerRegistry = loadPerformerRegistry();
 		this.sniperRegistry = new SniperRegistry();
 		loadCommands();
 		loadListeners();
-		new Favs(this);//FAWE add
+		new Favs(this);
+
 		// Enable metrics
 		new Metrics(this, BSTATS_ID);
 	}

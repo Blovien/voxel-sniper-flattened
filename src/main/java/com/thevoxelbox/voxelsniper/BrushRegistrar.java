@@ -79,6 +79,7 @@ import com.thevoxelbox.voxelsniper.brush.type.shell.ShellVoxelBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stamp.CloneStampBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stencil.StencilBrush;
 import com.thevoxelbox.voxelsniper.brush.type.stencil.StencilListBrush;
+import it.blovien.betterbrushes.ErodeBlendBrush;
 
 import java.io.File;
 
@@ -178,6 +179,21 @@ public class BrushRegistrar {
 		registerVoxelDiscBrush();
 		registerVoxelDiscFaceBrush();
 		registerWarpBrush();
+
+		// ADD
+		registerErodeBlendBrush();
+	}
+
+	private void registerErodeBlendBrush() {
+		BrushProperties properties = BrushProperties.builder()
+			.name("Erode Blendball")
+			.permission("voxelsniper.brush.erodeblend")
+			.alias("eb")
+			.alias("erodeblend")
+			.alias("erode_blend")
+			.creator(ErodeBlendBrush::new)
+			.build();
+		this.registry.register(properties);
 	}
 
 	private void registerBallBrush() {

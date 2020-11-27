@@ -1,6 +1,7 @@
 package com.thevoxelbox.voxelsniper.command;
 
 import com.thevoxelbox.voxelsniper.command.property.CommandProperties;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -35,12 +36,12 @@ public final class Command extends org.bukkit.command.Command {
 	public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
 		Class<? extends CommandSender> senderType = this.properties.getSenderTypeOrDefault();
 		if (!senderType.isInstance(sender)) {
-			sender.sendMessage(ChatColor.RED + "Only " + senderType.getSimpleName() + " can execute this command.");
+			Messages.send(sender, ChatColor.RED + "Only " + senderType.getSimpleName() + " can execute this command.");
 			return true;
 		}
 		String permission = this.properties.getPermission();
 		if (permission != null && !permission.isEmpty() && !sender.hasPermission(permission)) {
-			sender.sendMessage(ChatColor.RED + "Insufficient permissions.");
+			Messages.send(sender, ChatColor.RED + "Insufficient permissions.");
 			return true;
 		}
 		this.executor.executeCommand(sender, args);

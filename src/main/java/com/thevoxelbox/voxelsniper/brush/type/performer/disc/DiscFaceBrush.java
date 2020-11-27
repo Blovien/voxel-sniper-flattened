@@ -61,8 +61,6 @@ public class DiscFaceBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void discNorthSouth(Snipe snipe, Block targetBlock) {
@@ -80,8 +78,6 @@ public class DiscFaceBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void discEastWest(Snipe snipe, Block targetBlock) {
@@ -99,8 +95,6 @@ public class DiscFaceBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void pre(Snipe snipe, Block targetBlock) {

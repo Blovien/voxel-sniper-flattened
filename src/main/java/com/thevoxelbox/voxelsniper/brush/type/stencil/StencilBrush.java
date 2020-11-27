@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type.stencil;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
@@ -125,7 +124,6 @@ public class StencilBrush extends AbstractBrush {
 			messenger.sendMessage(ChatColor.RED + "You did not specify a filename.  This is required.");
 			return;
 		}
-		Undo undo = new Undo();
 		File file = new File("plugins/VoxelSniper/stencils/" + this.filename + ".vstencil");
 		if (file.exists()) {
 			try {
@@ -152,7 +150,6 @@ public class StencilBrush extends AbstractBrush {
 							int numLoops = in.readByte() + 128;
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
-								undo.put(this.clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 								clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(blockData, false);
 								currX++;
 								if (currX == this.x - this.xRef) {
@@ -165,7 +162,6 @@ public class StencilBrush extends AbstractBrush {
 								}
 							}
 						} else {
-							undo.put(this.clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 							clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(readBlockData(in), false);
 							currX++;
 							if (currX == this.x - this.xRef) {
@@ -186,7 +182,6 @@ public class StencilBrush extends AbstractBrush {
 							for (int j = 0; j < numLoops; j++) {
 								Material material = blockData.getMaterial();
 								if (!Materials.isEmpty(material) && Materials.isEmpty(clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).getType())) {
-									undo.put(this.clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 									clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(blockData, false);
 								}
 								currX++;
@@ -203,7 +198,6 @@ public class StencilBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							Material material = blockData.getMaterial();
 							if (!Materials.isEmpty(material) && Materials.isEmpty(clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).getType())) {
-								undo.put(clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 								// v.sendMessage("currX:" + currX + " currZ:"+currZ + " currY:" + currY + " id:" + id + " data:" + (byte)data);
 								clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(blockData, false);
 							}
@@ -226,7 +220,6 @@ public class StencilBrush extends AbstractBrush {
 							for (int j = 0; j < (numLoops); j++) {
 								Material material = blockData.getMaterial();
 								if (!Materials.isEmpty(material)) {
-									undo.put(this.clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 									clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(blockData, false);
 								}
 								currX++;
@@ -243,7 +236,6 @@ public class StencilBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							Material material = blockData.getMaterial();
 							if (!Materials.isEmpty(material)) {
-								undo.put(this.clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ));
 								clampY(blockPositionX + currX, blockPositionY + currY, blockPositionZ + currZ).setBlockData(blockData, false);
 							}
 							currX++;
@@ -259,8 +251,6 @@ public class StencilBrush extends AbstractBrush {
 					}
 				}
 				in.close();
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 			} catch (IOException exception) {
 				messenger.sendMessage(ChatColor.RED + "Something went wrong.");
 				exception.printStackTrace();

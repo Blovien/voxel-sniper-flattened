@@ -271,6 +271,7 @@ public class SignOverwriteBrush extends AbstractBrush {
 	/**
 	 * Saves the buffer to file.
 	 */
+	@SuppressWarnings("all")
 	private void saveBufferToFile(Snipe snipe, String fileName) {
 		SnipeMessenger messenger = snipe.createMessenger();
 		File store = new File(this.pluginDataFolder, fileName + ".vsign");
@@ -278,6 +279,7 @@ public class SignOverwriteBrush extends AbstractBrush {
 			messenger.sendMessage("This file already exists.");
 			return;
 		}
+
 		try {
 			store.createNewFile();
 			FileWriter outFile = new FileWriter(store);

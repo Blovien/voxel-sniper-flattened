@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type.redstone;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import org.bukkit.ChatColor;
@@ -18,7 +17,6 @@ public class SetRedstoneFlipBrush extends AbstractBrush {
 
 	@Nullable
 	private Block block;
-	private Undo undo;
 	private boolean northSouth = true;
 
 	@Override
@@ -50,9 +48,6 @@ public class SetRedstoneFlipBrush extends AbstractBrush {
 		if (set(targetBlock)) {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.GRAY + "Point one");
-		} else {
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(this.undo);
 		}
 	}
 
@@ -62,9 +57,6 @@ public class SetRedstoneFlipBrush extends AbstractBrush {
 		if (set(lastBlock)) {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.GRAY + "Point one");
-		} else {
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(this.undo);
 		}
 	}
 
@@ -73,7 +65,6 @@ public class SetRedstoneFlipBrush extends AbstractBrush {
 			this.block = block;
 			return true;
 		} else {
-			this.undo = new Undo();
 			int x1 = this.block.getX();
 			int x2 = block.getX();
 			int y1 = this.block.getY();
@@ -105,18 +96,14 @@ public class SetRedstoneFlipBrush extends AbstractBrush {
 			int delay = repeater.getDelay();
 			if (this.northSouth) {
 				if ((delay % 4) == 1) {
-					this.undo.put(block);
 					repeater.setDelay(delay + 2);
 				} else if ((delay % 4) == 3) {
-					this.undo.put(block);
 					repeater.setDelay(delay - 2);
 				}
 			} else {
 				if ((delay % 4) == 2) {
-					this.undo.put(block);
 					repeater.setDelay(delay - 2);
 				} else if ((delay % 4) == 0) {
-					this.undo.put(block);
 					repeater.setDelay(delay + 2);
 				}
 			}

@@ -112,8 +112,6 @@ public class JaggedLineBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

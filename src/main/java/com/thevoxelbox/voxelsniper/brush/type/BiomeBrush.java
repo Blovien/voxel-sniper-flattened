@@ -4,6 +4,7 @@ import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -25,7 +26,7 @@ public class BiomeBrush extends AbstractBrush {
 		Player player = sniper.getPlayer();
 		String firstParameter = parameters[1];
 		if (firstParameter.equalsIgnoreCase("info")) {
-			player.sendMessage(ChatColor.GOLD + "Biome Brush Parameters:");
+			Messages.send(player, ChatColor.GOLD + "Biome Brush Parameters:");
 			StringBuilder availableBiomes = new StringBuilder();
 			for (Biome biome : Biome.values()) {
 				if (availableBiomes.length() == 0) {
@@ -35,7 +36,7 @@ public class BiomeBrush extends AbstractBrush {
 				availableBiomes.append(ChatColor.RED + ", " + ChatColor.DARK_GREEN)
 					.append(biome.name());
 			}
-			player.sendMessage(ChatColor.DARK_BLUE + "Available biomes: " + availableBiomes);
+			Messages.send(player, ChatColor.DARK_BLUE + "Available biomes: " + availableBiomes);
 		} else {
 			// allows biome names with spaces in their name
 			String biomeName = IntStream.range(2, parameters.length)
@@ -45,7 +46,7 @@ public class BiomeBrush extends AbstractBrush {
 				.filter(biome -> biomeName.equalsIgnoreCase(biome.name()))
 				.findFirst()
 				.orElse(this.selectedBiome);
-			player.sendMessage(ChatColor.GOLD + "Currently selected biome type: " + ChatColor.DARK_GREEN + this.selectedBiome.name());
+			Messages.send(player, ChatColor.GOLD + "Currently selected biome type: " + ChatColor.DARK_GREEN + this.selectedBiome.name());
 		}
 	}
 

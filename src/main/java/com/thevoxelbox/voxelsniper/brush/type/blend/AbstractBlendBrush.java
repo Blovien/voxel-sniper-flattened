@@ -2,13 +2,11 @@ package com.thevoxelbox.voxelsniper.brush.type.blend;
 
 import com.sk89q.worldedit.math.BlockVector3;
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,18 +41,12 @@ public abstract class AbstractBlendBrush extends AbstractBrush {
 
 	public abstract void blend(Snipe snipe);
 
-	protected void setBlocks(Map<BlockVector3, Material> materials, Undo undo) {
+	protected void setBlocks(Map<BlockVector3, Material> materials) {
 		for (Entry<BlockVector3, Material> entry : materials.entrySet()) {
 			BlockVector3 position = entry.getKey();
 			Material material = entry.getValue();
-			if (checkExclusions(material)) {
-				Material currentBlockType = getBlockType(position);
-				if (currentBlockType != material) {
-					Block clamped = clampY(position);
-					undo.put(clamped);
-				}
+			if (checkExclusions(material))
 				setBlockType(position, material);
-			}
 		}
 	}
 
@@ -83,5 +75,9 @@ public abstract class AbstractBlendBrush extends AbstractBrush {
 			.blockTypeMessage()
 			.message(ChatColor.BLUE + "Water Mode: " + (this.waterExcluded ? "exclude" : "include"))
 			.send();
+	}
+
+	public void setAirExcluded(boolean airExcluded) {
+		this.airExcluded = airExcluded;
 	}
 }

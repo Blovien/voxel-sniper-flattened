@@ -209,8 +209,6 @@ public class SplatterOverlayBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void splatterOverlayTwo(Snipe snipe) {
@@ -297,8 +295,6 @@ public class SplatterOverlayBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

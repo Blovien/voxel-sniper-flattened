@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type.stencil;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
@@ -108,7 +107,6 @@ public class StencilListBrush extends AbstractBrush {
 		}
 		String stencilName = this.readRandomStencil();
 		messenger.sendMessage(stencilName);
-		Undo undo = new Undo();
 		File file = new File("plugins/VoxelSniper/stencils/" + stencilName + ".vstencil");
 		if (file.exists()) {
 			try {
@@ -135,7 +133,6 @@ public class StencilListBrush extends AbstractBrush {
 							int numLoops = in.readByte() + 128;
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).setBlockData(blockData, false);
 								currX++;
 								if (currX == this.x - this.xRef) {
@@ -148,7 +145,6 @@ public class StencilListBrush extends AbstractBrush {
 								}
 							}
 						} else {
-							undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 							this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 								.setBlockData(readBlockData(in), false);
 							currX++;
@@ -169,7 +165,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
 								if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -186,7 +181,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -208,7 +202,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < (numLoops); j++) {
 								if (!Materials.isEmpty(blockData.getMaterial())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -225,7 +218,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -242,8 +234,6 @@ public class StencilListBrush extends AbstractBrush {
 					}
 				}
 				in.close();
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 			} catch (IOException exception) {
 				messenger.sendMessage(ChatColor.RED + "Something went wrong.");
 				exception.printStackTrace();
@@ -260,7 +250,6 @@ public class StencilListBrush extends AbstractBrush {
 			return;
 		}
 		String stencilName = this.readRandomStencil();
-		Undo undo = new Undo();
 		File file = new File("plugins/VoxelSniper/stencils/" + stencilName + ".vstencil");
 		if (file.exists()) {
 			try {
@@ -287,7 +276,6 @@ public class StencilListBrush extends AbstractBrush {
 							int numLoops = in.readByte() + 128;
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 								currX--;
@@ -301,7 +289,6 @@ public class StencilListBrush extends AbstractBrush {
 								}
 							}
 						} else {
-							undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 							this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 								.setBlockData(readBlockData(in), false);
 							currX--;
@@ -322,7 +309,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
 								if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -339,7 +325,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -361,7 +346,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < (numLoops); j++) {
 								if (!Materials.isEmpty(blockData.getMaterial())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -378,7 +362,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -395,8 +378,6 @@ public class StencilListBrush extends AbstractBrush {
 					}
 				}
 				in.close();
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 			} catch (IOException exception) {
 				messenger.sendMessage(ChatColor.RED + "Something went wrong.");
 				exception.printStackTrace();
@@ -413,7 +394,6 @@ public class StencilListBrush extends AbstractBrush {
 			return;
 		}
 		String stencilName = this.readRandomStencil();
-		Undo undo = new Undo();
 		File file = new File("plugins/VoxelSniper/stencils/" + stencilName + ".vstencil");
 		if (file.exists()) {
 			try {
@@ -440,7 +420,6 @@ public class StencilListBrush extends AbstractBrush {
 							int numLoops = in.readByte() + 128;
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 								currZ++;
@@ -454,7 +433,6 @@ public class StencilListBrush extends AbstractBrush {
 								}
 							}
 						} else {
-							undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 							this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 								.setBlockData(readBlockData(in), false);
 							currZ++;
@@ -480,7 +458,6 @@ public class StencilListBrush extends AbstractBrush {
 									// most of the time from
 									// having to even check the
 									// block.
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -500,7 +477,6 @@ public class StencilListBrush extends AbstractBrush {
 								// air, and it prevents us most of
 								// the time from having to even
 								// check the block.
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -522,7 +498,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < (numLoops); j++) {
 								if (!Materials.isEmpty(blockData.getMaterial())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -539,7 +514,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -556,8 +530,6 @@ public class StencilListBrush extends AbstractBrush {
 					}
 				}
 				in.close();
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 			} catch (IOException exception) {
 				messenger.sendMessage(ChatColor.RED + "Something went wrong.");
 				exception.printStackTrace();
@@ -574,7 +546,6 @@ public class StencilListBrush extends AbstractBrush {
 			return;
 		}
 		String stencilName = this.readRandomStencil();
-		Undo undo = new Undo();
 		File file = new File("plugins/VoxelSniper/stencils/" + stencilName + ".vstencil");
 		if (file.exists()) {
 			try {
@@ -601,7 +572,6 @@ public class StencilListBrush extends AbstractBrush {
 							int numLoops = in.readByte() + 128;
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 								currZ--;
@@ -615,7 +585,6 @@ public class StencilListBrush extends AbstractBrush {
 								}
 							}
 						} else {
-							undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 							this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 								.setBlockData(readBlockData(in), false);
 							currZ--;
@@ -636,7 +605,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < numLoops; j++) {
 								if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -653,7 +621,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial()) && Materials.isEmpty(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ).getType())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -675,7 +642,6 @@ public class StencilListBrush extends AbstractBrush {
 							blockData = readBlockData(in);
 							for (int j = 0; j < (numLoops); j++) {
 								if (!Materials.isEmpty(blockData.getMaterial())) {
-									undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 									this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 										.setBlockData(blockData, false);
 								}
@@ -692,7 +658,6 @@ public class StencilListBrush extends AbstractBrush {
 						} else {
 							blockData = readBlockData(in);
 							if (!Materials.isEmpty(blockData.getMaterial())) {
-								undo.put(this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ));
 								this.clampY(targetBlock.getX() + currX, targetBlock.getY() + currY, targetBlock.getZ() + currZ)
 									.setBlockData(blockData, false);
 							}
@@ -709,8 +674,6 @@ public class StencilListBrush extends AbstractBrush {
 					}
 				}
 				in.close();
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 			} catch (IOException exception) {
 				messenger.sendMessage(ChatColor.RED + "Something went wrong.");
 				exception.printStackTrace();

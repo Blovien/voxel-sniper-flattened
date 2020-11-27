@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -45,7 +44,6 @@ public class EraserBrush extends AbstractBrush {
 		int brushSizeDoubled = 2 * brushSize;
 		Block targetBlock = getTargetBlock();
 		World world = targetBlock.getWorld();
-		Undo undo = new Undo();
 		for (int x = brushSizeDoubled; x >= 0; x--) {
 			int currentX = targetBlock.getX() - brushSize + x;
 			for (int y = 0; y <= brushSizeDoubled; y++) {
@@ -54,14 +52,11 @@ public class EraserBrush extends AbstractBrush {
 					int currentZ = targetBlock.getZ() - brushSize + z;
 					Block currentBlock = world.getBlockAt(currentX, currentY, currentZ);
 					if (!EXCLUSIVE_MATERIALS.contains(currentBlock) && (!keepWater || !EXCLUSIVE_LIQUIDS.contains(currentBlock))) {
-						undo.put(currentBlock);
 						currentBlock.setType(Material.AIR);
 					}
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override

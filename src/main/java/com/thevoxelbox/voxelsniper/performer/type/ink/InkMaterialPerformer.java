@@ -1,14 +1,13 @@
 package com.thevoxelbox.voxelsniper.performer.type.ink;
 
-import com.thevoxelbox.voxelsniper.performer.type.AbstractPerformer;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
+import com.thevoxelbox.voxelsniper.performer.Performer;
 import com.thevoxelbox.voxelsniper.sniper.snipe.performer.PerformerSnipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-public class InkMaterialPerformer extends AbstractPerformer {
+public class InkMaterialPerformer implements Performer {
 
 	private BlockData blockData;
 	private Material replaceMaterial;
@@ -23,8 +22,6 @@ public class InkMaterialPerformer extends AbstractPerformer {
 	@Override
 	public void perform(Block block) {
 		if (block.getType() == this.replaceMaterial) {
-			Undo undo = getUndo();
-			undo.put(block);
 			block.setBlockData(this.blockData);
 		}
 	}

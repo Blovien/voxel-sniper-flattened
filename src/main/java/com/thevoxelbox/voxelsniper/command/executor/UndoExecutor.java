@@ -5,6 +5,7 @@ import com.thevoxelbox.voxelsniper.command.CommandExecutor;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
 import com.thevoxelbox.voxelsniper.util.text.NumericParser;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class UndoExecutor implements CommandExecutor {
 		if (arguments.length == 1) {
 			Integer amount = NumericParser.parseInteger(arguments[0]);
 			if (amount == null) {
-				sender.sendMessage("Error while parsing amount of undo. Number format exception.");
+				Messages.send(sender,"Error while parsing amount of undo. Number format exception.");
 				return;
 			}
 			sniper.undo(sender, amount);

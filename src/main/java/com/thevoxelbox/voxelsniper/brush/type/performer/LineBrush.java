@@ -71,8 +71,6 @@ public class LineBrush extends AbstractPerformerBrush {
 				this.performer.perform(currentBlock);
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

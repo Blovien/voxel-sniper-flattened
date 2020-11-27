@@ -15,6 +15,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.Messenger;
 import com.thevoxelbox.voxelsniper.util.text.NumericParser;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,12 +39,12 @@ public class BrushExecutor implements CommandExecutor, TabCompleter {
 		Player player = (Player) sender;
 		Sniper sniper = sniperRegistry.getSniper(player);
 		if (sniper == null) {
-			sender.sendMessage(ChatColor.RED + "Sniper not found.");
+			Messages.send(sender, ChatColor.RED + "Sniper not found.");
 			return;
 		}
 		Toolkit toolkit = sniper.getCurrentToolkit();
 		if (toolkit == null) {
-			sender.sendMessage(ChatColor.RED + "Current toolkit not found.");
+			Messages.send(sender,ChatColor.RED + "Current toolkit not found.");
 			return;
 		}
 		ToolkitProperties toolkitProperties = toolkit.getProperties();
@@ -51,7 +52,7 @@ public class BrushExecutor implements CommandExecutor, TabCompleter {
 			BrushProperties previousBrushProperties = toolkit.getPreviousBrushProperties();
 			String permission = previousBrushProperties.getPermission();
 			if (permission != null && !player.hasPermission(permission)) {
-				sender.sendMessage(ChatColor.RED + "Insufficient permissions.");
+				Messages.send(sender,ChatColor.RED + "Insufficient permissions.");
 				return;
 			}
 			toolkit.useBrush(previousBrushProperties);
@@ -65,7 +66,7 @@ public class BrushExecutor implements CommandExecutor, TabCompleter {
 			int litesniperMaxBrushSize = config.getLitesniperMaxBrushSize();
 			Messenger messenger = new Messenger(sender);
 			if (!sender.hasPermission("voxelsniper.ignorelimitations") && brushSize > litesniperMaxBrushSize) {
-				sender.sendMessage("Size is restricted to " + litesniperMaxBrushSize + " for you.");
+				Messages.send(sender,"Size is restricted to " + litesniperMaxBrushSize + " for you.");
 				toolkitProperties.setBrushSize(litesniperMaxBrushSize);
 				messenger.sendBrushSizeMessage(litesniperMaxBrushSize);
 			} else {
@@ -77,44 +78,28 @@ public class BrushExecutor implements CommandExecutor, TabCompleter {
 		BrushRegistry brushRegistry = this.plugin.getBrushRegistry();
 		BrushProperties newBrush = brushRegistry.getBrushProperties(firstArgument);
 		if (newBrush == null) {
-			sender.sendMessage(ChatColor.RED + "Could not find brush for alias " + firstArgument + ".");
+			Messages.send(sender,ChatColor.RED + "Could not find brush for alias " + firstArgument + ".");
 			return;
 		}
 		String permission = newBrush.getPermission();
 		if (permission != null && !player.hasPermission(permission)) {
-			sender.sendMessage(ChatColor.RED + "Insufficient permissions.");
+			Messages.send(sender,ChatColor.RED + "Insufficient permissions.");
 			return;
 		}
 		Brush brush = toolkit.useBrush(newBrush);
 		if (arguments.length > 1) {
 			Snipe snipe = new Snipe(sniper, toolkit, toolkitProperties, newBrush, brush);
+			String[] parameters = Arrays.copyOfRange(arguments, 1, arguments.length);
 			if (brush instanceof PerformerBrush) {
-				String[] parameters = Arrays.copyOfRange(arguments, 1, arguments.length);
 				PerformerBrush performerBrush = (PerformerBrush) brush;
 				performerBrush.handleCommand(parameters, snipe);
 			} else {
-				String[] parameters = hackTheArray(Arrays.copyOfRange(arguments, 1, arguments.length));
+				//parameters[0] = ""; //hackTheArray(Arrays.copyOfRange(arguments, 1, arguments.length));
 				brush.handleCommand(parameters, snipe);
 			}
 			return;
 		}
 		sniper.sendInfo(sender);
-	}
-
-	/**
-	 * Padds an empty String to the front of the array.
-	 *
-	 * @param args Array to pad empty string in front of
-	 * @return padded array
-	 */
-	private String[] hackTheArray(String[] args) {
-		String[] returnValue = new String[args.length + 1];
-		returnValue[0] = "";
-		for (int i = 0, argsLength = args.length; i < argsLength; i++) {
-			String arg = args[i];
-			returnValue[i + 1] = arg;
-		}
-		return returnValue;
 	}
 
 	@Override

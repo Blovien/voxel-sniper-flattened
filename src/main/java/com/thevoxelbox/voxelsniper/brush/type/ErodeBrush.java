@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.sk89q.worldedit.math.BlockVector3;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -116,17 +115,13 @@ public class ErodeBrush extends AbstractBrush {
 		for (int i = 0; i < erosionPreset.getFillRecursion(); ++i) {
 			fillIteration(toolkitProperties, erosionPreset, blockChangeTracker, targetBlockVector);
 		}
-		Undo undo = new Undo();
 		for (BlockWrapper blockWrapper : blockChangeTracker.getAll()) {
 			Block block = blockWrapper.getBlock();
 			if (block != null) {
 				BlockData blockData = blockWrapper.getBlockData();
-				undo.put(block);
 				block.setBlockData(blockData);
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	private void fillIteration(ToolkitProperties toolkitProperties, ErosionPreset erosionPreset, BlockChangeTracker blockChangeTracker, Vector targetBlockVector) {
@@ -214,7 +209,7 @@ public class ErodeBrush extends AbstractBrush {
 		messenger.sendMessage(ChatColor.DARK_GREEN + "Fill recursion amount set to " + this.currentPreset.getFillRecursion());
 	}
 
-	private enum Preset {
+	public enum Preset {
 
 		MELT("melt", new ErosionPreset(2, 1, 5, 1)),
 		FILL("fill", new ErosionPreset(5, 1, 2, 1)),
@@ -247,14 +242,14 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	private static final class BlockChangeTracker {
+	public static final class BlockChangeTracker {
 
 		private Map<Integer, Map<Vector, BlockWrapper>> blockChanges;
 		private Map<Vector, BlockWrapper> flatChanges;
 		private World world;
 		private int nextIterationId;
 
-		private BlockChangeTracker(World world) {
+		public BlockChangeTracker(World world) {
 			this.blockChanges = new HashMap<>();
 			this.flatChanges = new HashMap<>();
 			this.world = world;
@@ -292,17 +287,17 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	private static final class BlockWrapper {
+	public static final class BlockWrapper {
 
 		@Nullable
 		private Block block;
 		private BlockData blockData;
 
-		private BlockWrapper(Block block) {
+		public BlockWrapper(Block block) {
 			this(block, block.getBlockData());
 		}
 
-		private BlockWrapper(@Nullable Block block, BlockData blockData) {
+		public BlockWrapper(@Nullable Block block, BlockData blockData) {
 			this.block = block;
 			this.blockData = blockData;
 		}
@@ -327,7 +322,7 @@ public class ErodeBrush extends AbstractBrush {
 		}
 	}
 
-	private static final class ErosionPreset implements Serializable {
+	public static final class ErosionPreset implements Serializable {
 
 		private static final long serialVersionUID = 8997952776355430411L;
 
@@ -336,7 +331,7 @@ public class ErodeBrush extends AbstractBrush {
 		private final int fillFaces;
 		private final int fillRecursion;
 
-		private ErosionPreset(int erosionFaces, int erosionRecursion, int fillFaces, int fillRecursion) {
+		public ErosionPreset(int erosionFaces, int erosionRecursion, int fillFaces, int fillRecursion) {
 			this.erosionFaces = erosionFaces;
 			this.erosionRecursion = erosionRecursion;
 			this.fillFaces = fillFaces;

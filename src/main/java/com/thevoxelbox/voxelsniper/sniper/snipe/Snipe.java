@@ -17,7 +17,6 @@ public class Snipe {
 	private BrushProperties brushProperties;
 	private Brush brush;
 
-
 	public Snipe(Sniper sniper, Toolkit toolkit, ToolkitProperties toolkitProperties, BrushProperties brushProperties, Brush brush) {
 		this.sniper = sniper;
 		this.toolkit = toolkit;

@@ -5,6 +5,7 @@ import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -69,12 +70,12 @@ public class JockeyBrush extends AbstractBrush {
 		Player player = sniper.getPlayer();
 		if (this.jockeyType == JockeyType.INVERSE_PLAYER_ONLY || this.jockeyType == JockeyType.INVERSE_ALL_ENTITIES) {
 			player.eject();
-			player.sendMessage(ChatColor.GOLD + "The guy on top of you has been ejected!");
+			Messages.send(player, ChatColor.GOLD + "The guy on top of you has been ejected!");
 		} else {
 			if (this.jockeyedEntity != null) {
 				this.jockeyedEntity.eject();
 				this.jockeyedEntity = null;
-				player.sendMessage(ChatColor.GOLD + "You have been ejected!");
+				Messages.send(player, ChatColor.GOLD + "You have been ejected!");
 			}
 		}
 	}
@@ -123,11 +124,11 @@ public class JockeyBrush extends AbstractBrush {
 					finalClosest.addPassenger(player);
 					jockeyedEntity = finalClosest;
 				}
-				player.sendMessage(ChatColor.GREEN + "You are now saddles on entity: " + finalClosest.getEntityId());
+				Messages.send(player, ChatColor.GREEN + "You are now saddles on entity: " + finalClosest.getEntityId());
 			}
 			});
 		} else {
-			player.sendMessage(ChatColor.RED + "Could not find any entities");
+			Messages.send(player, ChatColor.RED + "Could not find any entities");
 		}
 	}
 
@@ -140,9 +141,9 @@ public class JockeyBrush extends AbstractBrush {
 		Entity lastEntity = player;
 		int stackHeight = 0;
 		for (Entity entity : nearbyEntities) {
-			if (stackHeight >= ENTITY_STACK_LIMIT) {
+			if (stackHeight >= ENTITY_STACK_LIMIT)
 				return;
-			}
+
 			if (this.jockeyType == JockeyType.STACK_ALL_ENTITIES) {
 				lastEntity.addPassenger(entity);
 				lastEntity = entity;
@@ -153,9 +154,8 @@ public class JockeyBrush extends AbstractBrush {
 					lastEntity = entity;
 					stackHeight++;
 				}
-			} else {
-				player.sendMessage("You broke stack! :O");
-			}
+			} else
+				Messages.send(player, "You broke stack! :O");
 		}
 	}
 

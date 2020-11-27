@@ -8,6 +8,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.BlockTracer;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.Messenger;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -47,7 +48,7 @@ public class VoxelInkReplaceExecutor implements CommandExecutor {
 			try {
 				blockData = Bukkit.createBlockData(arguments[0]);
 			} catch (IllegalArgumentException exception) {
-				sender.sendMessage("Couldn't parse input.");
+				Messages.send(sender,"Couldn't parse input.");
 				return;
 			}
 		}

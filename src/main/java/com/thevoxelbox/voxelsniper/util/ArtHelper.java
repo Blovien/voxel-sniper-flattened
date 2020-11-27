@@ -1,5 +1,6 @@
 package com.thevoxelbox.voxelsniper.util;
 
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -29,11 +30,11 @@ public final class ArtHelper {
 			return;
 		}
 		if (art == null) {
-			player.sendMessage(ChatColor.RED + "Your input was invalid somewhere.");
+			Messages.send(player,ChatColor.RED + "Your input was invalid somewhere.");
 			return;
 		}
 		bestMatch.setArt(art);
-		player.sendMessage(ChatColor.GREEN + "Painting set to: " + art);
+		Messages.send(player, ChatColor.GREEN + "Painting set to: " + art);
 	}
 
 	public static void paintAuto(Player player, boolean back) {
@@ -44,12 +45,12 @@ public final class ArtHelper {
 		Art bestMatchArt = bestMatch.getArt();
 		int ordinal = bestMatchArt.ordinal() + (back ? -1 : 1);
 		if (ordinal < 0 || ordinal >= Art.values().length) {
-			player.sendMessage(ChatColor.RED + "This is the final painting, try scrolling to the other direction.");
+			Messages.send(player, ChatColor.RED + "This is the final painting, try scrolling to the other direction.");
 			return;
 		}
 		Art ordinalArt = Art.values()[ordinal];
 		bestMatch.setArt(ordinalArt);
-		player.sendMessage(ChatColor.GREEN + "Painting set to: " + ordinalArt);
+		Messages.send(player, ChatColor.GREEN + "Painting set to: " + ordinalArt);
 	}
 
 	@Nullable

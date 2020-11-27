@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import org.bukkit.ChatColor;
@@ -28,17 +27,7 @@ public class RegenerateChunkBrush extends AbstractBrush {
 	private void generateChunk(Snipe snipe) {
 		Block targetBlock = getTargetBlock();
 		Chunk chunk = targetBlock.getChunk();
-		Undo undo = new Undo();
 		World world = getWorld();
-		for (int z = CHUNK_SIZE; z >= 0; z--) {
-			for (int x = CHUNK_SIZE; x >= 0; x--) {
-				for (int y = world.getMaxHeight(); y >= 0; y--) {
-					undo.put(chunk.getBlock(x, y, z));
-				}
-			}
-		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 		SnipeMessenger messenger = snipe.createMessenger();
 		messenger.sendMessage("Generate that chunk! " + chunk.getX() + " " + chunk.getZ());
 		world.regenerateChunk(chunk.getX(), chunk.getZ());

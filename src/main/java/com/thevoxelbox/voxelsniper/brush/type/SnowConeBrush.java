@@ -1,7 +1,5 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
-import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
@@ -30,12 +28,12 @@ public class SnowConeBrush extends AbstractBrush {
 	public void handleGunpowderAction(Snipe snipe) {
 		Block targetBlock = getTargetBlock();
 		if (targetBlock.getType() == Material.SNOW) {
-			addSnow(snipe, targetBlock);
+			addSnow(targetBlock);
 		} else {
 			Block blockAbove = targetBlock.getRelative(BlockFace.UP);
 			Material type = blockAbove.getType();
 			if (Materials.isEmpty(type)) {
-				addSnow(snipe, blockAbove);
+				addSnow(blockAbove);
 			} else {
 				SnipeMessenger messenger = snipe.createMessenger();
 				messenger.sendMessage(ChatColor.RED + "Error: Center block neither snow nor air.");
@@ -43,7 +41,7 @@ public class SnowConeBrush extends AbstractBrush {
 		}
 	}
 
-	private void addSnow(Snipe snipe, Block targetBlock) {
+	private void addSnow(Block targetBlock) {
 		int blockPositionX = targetBlock.getX();
 		int blockPositionY = targetBlock.getY();
 		int blockPositionZ = targetBlock.getZ();
@@ -106,19 +104,12 @@ public class SnowConeBrush extends AbstractBrush {
 				}
 			}
 		}
-		Undo undo = new Undo();
 		for (int x = 0; x <= brushSizeDoubled; x++) {
 			for (int z = 0; z <= brushSizeDoubled; z++) {
-				if (getBlockType(blockPositionX - brushSize + x, blockPositionY - yOffset[x][z], blockPositionZ - brushSize + z) != snowCone[x][z] || !clampY(blockPositionX - brushSize + x, blockPositionY - yOffset[x][z], blockPositionZ - brushSize + z).getBlockData()
-					.equals(snowConeData[x][z])) {
-					undo.put(clampY(blockPositionX - brushSize + x, blockPositionY - yOffset[x][z], blockPositionZ - brushSize + z));
-				}
 				setBlockType(blockPositionX - brushSize + x, blockPositionY - yOffset[x][z], blockPositionZ - brushSize + z, snowCone[x][z]);
 				clampY(blockPositionX - brushSize + x, blockPositionY - yOffset[x][z], blockPositionZ - brushSize + z).setBlockData(snowConeData[x][z]);
 			}
-		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
+		};
 	}
 
 	private int blockDataToSnowLayers(BlockData blockData) {

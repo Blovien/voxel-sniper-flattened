@@ -7,6 +7,7 @@ import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolAction;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,7 @@ public class BrushToolkitExecutor implements CommandExecutor {
 		Player player = (Player) sender;
 		Sniper sniper = sniperRegistry.getSniper(player);
 		if (sniper == null) {
-			sender.sendMessage(ChatColor.RED + "Sniper not found.");
+			Messages.send(sender,ChatColor.RED + "Sniper not found.");
 			return;
 		}
 		int length = arguments.length;
@@ -36,14 +37,14 @@ public class BrushToolkitExecutor implements CommandExecutor {
 		if (length == 3 && firstArgument.equalsIgnoreCase("assign")) {
 			ToolAction action = ToolAction.getToolAction(arguments[1]);
 			if (action == null) {
-				sender.sendMessage("/btool assign <arrow|gunpowder> <toolkit name>");
+				Messages.send(sender,"/btool assign <arrow|gunpowder> <toolkit name>");
 				return;
 			}
 			PlayerInventory inventory = player.getInventory();
 			ItemStack itemInHand = inventory.getItemInMainHand();
 			Material itemType = itemInHand.getType();
 			if (Materials.isEmpty(itemType)) {
-				sender.sendMessage("/btool assign <arrow|gunpowder> <toolkit name>");
+				Messages.send(sender,"/btool assign <arrow|gunpowder> <toolkit name>");
 				return;
 			}
 			String toolkitName = arguments[2];
@@ -53,13 +54,13 @@ public class BrushToolkitExecutor implements CommandExecutor {
 			}
 			toolkit.addToolAction(itemType, action);
 			sniper.addToolkit(toolkit);
-			sender.sendMessage(itemType.name() + " has been assigned to '" + toolkitName + "' as action " + action.name() + ".");
+			Messages.send(sender,itemType.name() + " has been assigned to '" + toolkitName + "' as action " + action.name() + ".");
 			return;
 		}
 		if (length == 2 && firstArgument.equalsIgnoreCase("remove")) {
 			Toolkit toolkit = sniper.getToolkit(arguments[1]);
 			if (toolkit == null) {
-				sender.sendMessage(ChatColor.RED + "Toolkit " + arguments[1] + " not found.");
+				Messages.send(sender,ChatColor.RED + "Toolkit " + arguments[1] + " not found.");
 				return;
 			}
 			sniper.removeToolkit(toolkit);
@@ -70,19 +71,19 @@ public class BrushToolkitExecutor implements CommandExecutor {
 			ItemStack itemInHand = inventory.getItemInMainHand();
 			Material material = itemInHand.getType();
 			if (Materials.isEmpty(material)) {
-				sender.sendMessage("Can't unassign empty hands.");
+				Messages.send(sender,"Can't unassign empty hands.");
 				return;
 			}
 			Toolkit toolkit = sniper.getCurrentToolkit();
 			if (toolkit == null) {
-				sender.sendMessage("Can't unassign default tool.");
+				Messages.send(sender,"Can't unassign default tool.");
 				return;
 			}
 			toolkit.removeToolAction(material);
 			return;
 		}
-		sender.sendMessage("/btool assign <arrow|gunpowder> <toolkit name>");
-		sender.sendMessage("/btool remove <toolkit name>");
-		sender.sendMessage("/btool remove");
+		Messages.send(sender,"/btool assign <arrow|gunpowder> <toolkit name>");
+		Messages.send(sender,"/btool remove <toolkit name>");
+		Messages.send(sender,"/btool remove");
 	}
 }

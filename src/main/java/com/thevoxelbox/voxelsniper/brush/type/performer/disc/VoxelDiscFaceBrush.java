@@ -58,8 +58,6 @@ public class VoxelDiscFaceBrush extends AbstractPerformerBrush {
 				this.performer.perform(this.clampY(targetBlock.getX() + x, targetBlock.getY() + y, targetBlock.getZ()));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void discEastWest(Snipe snipe, Block targetBlock) {
@@ -70,8 +68,6 @@ public class VoxelDiscFaceBrush extends AbstractPerformerBrush {
 				this.performer.perform(this.clampY(targetBlock.getX(), targetBlock.getY() + x, targetBlock.getZ() + y));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void disc(Snipe snipe, Block targetBlock) {
@@ -82,8 +78,6 @@ public class VoxelDiscFaceBrush extends AbstractPerformerBrush {
 				this.performer.perform(this.clampY(targetBlock.getX() + x, targetBlock.getY(), targetBlock.getZ() + y));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

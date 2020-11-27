@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.MaterialSet;
@@ -23,7 +22,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 	// Tree Variables.
 	private Random randGenerator = new Random();
 	private List<Block> branchBlocks = new ArrayList<>();
-	private Undo undo;
 	// If these default values are edited. Remember to change default values in the default preset.
 	private Material leafType = Material.OAK_LEAVES;
 	private Material woodType = Material.OAK_LOG;
@@ -178,7 +176,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 
 	@Override
 	public void handleArrowAction(Snipe snipe) {
-		this.undo = new Undo();
 		this.branchBlocks.clear();
 		// Sets the location variables.
 		Block targetBlock = this.getTargetBlock();
@@ -197,9 +194,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 			this.blockPositionZ = block.getZ();
 			this.createLeafNode();
 		}
-		// Ends the undo function and mos on.
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.undo);
 	}
 	// The Powder currently does nothing extra.
 
@@ -229,10 +223,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 			// 50% chance to increase elevation every second block.
 			if (Math.abs(r % 2) == 1) {
 				this.blockPositionY += this.randGenerator.nextInt(2);
-			}
-			// Add block to undo function.
-			if (!Tag.LOGS.isTagged(getBlockType(this.blockPositionX, this.blockPositionY, this.blockPositionZ))) {
-				this.undo.put(clampY(this.blockPositionX, this.blockPositionY, this.blockPositionZ));
 			}
 			// Creates a branch block.
 			clampY(this.blockPositionX, this.blockPositionY, this.blockPositionZ).setType(this.woodType, false);
@@ -277,10 +267,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 			// If block is Air, create a leaf block.
 			Block block = world.getBlockAt(x, y, z);
 			if (Materials.isEmpty(block.getType())) {
-				// Adds block to undo function.
-				if (!Tag.LEAVES.isTagged(getBlockType(x, y, z))) {
-					this.undo.put(clampY(x, y, z));
-				}
 				// Creates block.
 				clampY(x, y, z).setType(this.leafType, false);
 			}
@@ -318,7 +304,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 					// End loop
 					break;
 				} else {
-					this.undo.put(clampY(this.blockPositionX, this.blockPositionY, this.blockPositionZ));
 					// Place log block.
 					clampY(this.blockPositionX, this.blockPositionY, this.blockPositionZ).setType(this.woodType, false);
 				}
@@ -394,9 +379,6 @@ public class GenerateTreeBrush extends AbstractBrush {
 		Block block = world.getBlockAt(x, this.blockPositionY, y);
 		if (Materials.isEmpty(block.getType())) {
 			// Adds block to undo function.
-			if (!Tag.LOGS.isTagged(getBlockType(x, this.blockPositionY, y))) {
-				this.undo.put(this.clampY(x, this.blockPositionY, y));
-			}
 			// Creates block.
 			clampY(x, this.blockPositionY, y).setType(this.woodType, false);
 		}

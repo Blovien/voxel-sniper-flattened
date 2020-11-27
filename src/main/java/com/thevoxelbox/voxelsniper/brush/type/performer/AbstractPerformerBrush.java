@@ -12,6 +12,8 @@ import com.thevoxelbox.voxelsniper.sniper.snipe.performer.PerformerSnipe;
 
 import java.util.Arrays;
 
+import static it.blovien.betterbrushes.Utils.hackTheArray;
+
 public abstract class AbstractPerformerBrush extends AbstractBrush implements PerformerBrush {
 
 	private PerformerProperties performerProperties;
@@ -43,26 +45,10 @@ public abstract class AbstractPerformerBrush extends AbstractBrush implements Pe
 		}
 	}
 
-	/**
-	 * Padds an empty String to the front of the array.
-	 *
-	 * @param args Array to pad empty string in front of
-	 * @return padded array
-	 */
-	private String[] hackTheArray(String[] args) {
-		String[] returnValue = new String[args.length + 1];
-		for (int i = 0, argsLength = args.length; i < argsLength; i++) {
-			String arg = args[i];
-			returnValue[i + 1] = arg;
-		}
-		return returnValue;
-	}
-
 	@Override
 	public void initialize(Snipe snipe) {
 		PerformerSnipe performerSnipe = new PerformerSnipe(snipe, this.performerProperties, this.performer);
 		this.performer.initialize(performerSnipe);
-		this.performer.initializeUndo();
 	}
 
 	@Override

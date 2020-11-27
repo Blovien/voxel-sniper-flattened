@@ -91,8 +91,6 @@ public class UnderlayBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void underlay2(Snipe snipe) {
@@ -127,8 +125,6 @@ public class UnderlayBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

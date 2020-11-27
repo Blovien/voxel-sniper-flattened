@@ -11,6 +11,7 @@ import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.text.NumericParser;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class VoxelSniperExecutor implements CommandExecutor {
 				Map<String, BrushProperties> brushes = brushRegistry.getBrushesProperties();
 				Set<String> aliases = brushes.keySet();
 				String aliasesString = String.join(", ", aliases);
-				sender.sendMessage(aliasesString);
+				Messages.send(sender,aliasesString);
 				return;
 			} else if (firstArgument.equalsIgnoreCase("range")) {
 				Toolkit toolkit = sniper.getCurrentToolkit();
@@ -56,26 +57,26 @@ public class VoxelSniperExecutor implements CommandExecutor {
 				if (arguments.length == 2) {
 					Integer range = NumericParser.parseInteger(arguments[1]);
 					if (range == null) {
-						sender.sendMessage("Can't parse number.");
+						Messages.send(sender, "Can't parse number.");
 						return;
 					}
 					if (range < 1) {
-						sender.sendMessage("Values less than 1 are not allowed.");
+						Messages.send(sender, "Values less than 1 are not allowed.");
 					}
 					toolkitProperties.setBlockTracerRange(range);
 				} else {
 					toolkitProperties.setBlockTracerRange(0);
 				}
 				Integer blockTracerRange = toolkitProperties.getBlockTracerRange();
-				sender.sendMessage(ChatColor.GOLD + "Distance Restriction toggled " + ChatColor.DARK_RED + (blockTracerRange == null ? "off" : "on") + ChatColor.GOLD + ". Range is " + ChatColor.LIGHT_PURPLE + blockTracerRange);
+				Messages.send(sender,ChatColor.GOLD + "Distance Restriction toggled " + ChatColor.DARK_RED + (blockTracerRange == null ? "off" : "on") + ChatColor.GOLD + ". Range is " + ChatColor.LIGHT_PURPLE + blockTracerRange);
 				return;
 			} else if (firstArgument.equalsIgnoreCase("perf")) {
 				PerformerRegistry performerRegistry = this.plugin.getPerformerRegistry();
 				Map<String, PerformerProperties> performerProperties = performerRegistry.getPerformerProperties();
 				Set<String> aliases = performerProperties.keySet();
 				String aliasesString = String.join(", ", aliases);
-				sender.sendMessage(ChatColor.AQUA + "Available performers (abbreviated):");
-				sender.sendMessage(aliasesString);
+				Messages.send(sender,ChatColor.AQUA + "Available performers (abbreviated):");
+				Messages.send(sender,aliasesString);
 				return;
 			} else if (firstArgument.equalsIgnoreCase("perflong")) {
 				PerformerRegistry performerRegistry = this.plugin.getPerformerRegistry();
@@ -84,24 +85,24 @@ public class VoxelSniperExecutor implements CommandExecutor {
 					.stream()
 					.map(PerformerProperties::getName)
 					.collect(Collectors.joining(", "));
-				sender.sendMessage(ChatColor.AQUA + "Available performers:");
-				sender.sendMessage(names);
+				Messages.send(sender,ChatColor.AQUA + "Available performers:");
+				Messages.send(sender,names);
 				return;
 			} else if (firstArgument.equalsIgnoreCase("enable")) {
 				sniper.setEnabled(true);
-				sender.sendMessage("VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
+				Messages.send(sender,"VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
 				return;
 			} else if (firstArgument.equalsIgnoreCase("disable")) {
 				sniper.setEnabled(false);
-				sender.sendMessage("VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
+				Messages.send(sender,"VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
 				return;
 			} else if (firstArgument.equalsIgnoreCase("toggle")) {
 				sniper.setEnabled(!sniper.isEnabled());
-				sender.sendMessage("VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
+				Messages.send(sender,"VoxelSniper is " + (sniper.isEnabled() ? "enabled" : "disabled"));
 				return;
 			}
 		}
-		sender.sendMessage(ChatColor.DARK_RED + "VoxelSniper - Current Brush Settings:");
+		Messages.send(sender, ChatColor.DARK_RED + "VoxelSniper - Current Brush Settings:");
 		sniper.sendInfo(sender);
 	}
 }

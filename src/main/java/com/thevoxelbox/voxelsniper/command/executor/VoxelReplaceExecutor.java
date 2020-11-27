@@ -9,6 +9,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.BlockTracer;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.Messenger;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -67,7 +68,7 @@ public class VoxelReplaceExecutor implements CommandExecutor, TabCompleter {
 				toolkitProperties.setReplaceBlockType(material);
 				messenger.sendReplaceBlockTypeMessage(material);
 			} else {
-				sender.sendMessage(ChatColor.RED + "You have entered an invalid Item ID.");
+				Messages.send(sender,ChatColor.RED + "You have entered an invalid Item ID.");
 			}
 		}
 	}

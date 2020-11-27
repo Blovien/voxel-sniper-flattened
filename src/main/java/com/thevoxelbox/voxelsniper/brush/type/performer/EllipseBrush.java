@@ -140,8 +140,6 @@ public class EllipseBrush extends AbstractPerformerBrush {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.RED + "Invalid target.");
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void ellipseFill(Snipe snipe, Block targetBlock) {
@@ -216,8 +214,6 @@ public class EllipseBrush extends AbstractPerformerBrush {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.RED + "Invalid target.");
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.Messenger;
 import com.thevoxelbox.voxelsniper.util.text.NumericParser;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class VoxelHeightExecutor implements CommandExecutor {
 		}
 		Integer height = NumericParser.parseInteger(arguments[0]);
 		if (height == null) {
-			sender.sendMessage(ChatColor.RED + "Invalid input.");
+			Messages.send(sender,ChatColor.RED + "Invalid input.");
 			return;
 		}
 		toolkitProperties.setVoxelHeight(height);

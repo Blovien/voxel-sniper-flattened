@@ -1,7 +1,5 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
-import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
@@ -47,15 +45,15 @@ public class TreeSnipeBrush extends AbstractBrush {
 	@Override
 	public void handleArrowAction(Snipe snipe) {
 		Block targetBlock = getTargetBlock().getRelative(0, getYOffset(), 0);
-		single(snipe, targetBlock);
+		single(targetBlock);
 	}
 
 	@Override
 	public void handleGunpowderAction(Snipe snipe) {
-		single(snipe, getTargetBlock());
+		single(getTargetBlock());
 	}
 
-	private void single(Snipe snipe, Block targetBlock) {
+	private void single(Block targetBlock) {
 		UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
 		Block blockBelow = targetBlock.getRelative(BlockFace.DOWN);
 		BlockState currentState = blockBelow.getState();
@@ -63,11 +61,7 @@ public class TreeSnipeBrush extends AbstractBrush {
 		blockBelow.setType(Material.GRASS_BLOCK);
 		World world = getWorld();
 		world.generateTree(targetBlock.getLocation(), this.treeType, undoDelegate);
-		Undo undo = undoDelegate.getUndo();
 		blockBelow.setBlockData(currentState.getBlockData());
-		undo.put(blockBelow);
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	private int getYOffset() {
@@ -98,23 +92,14 @@ public class TreeSnipeBrush extends AbstractBrush {
 	private static final class UndoDelegate implements BlockChangeDelegate {
 
 		private World targetWorld;
-		private Undo currentUndo;
 
 		private UndoDelegate(World targetWorld) {
 			this.targetWorld = targetWorld;
-			this.currentUndo = new Undo();
-		}
-
-		public Undo getUndo() {
-			Undo pastUndo = this.currentUndo;
-			this.currentUndo = new Undo();
-			return pastUndo;
 		}
 
 		public void setBlock(Block block) {
 			Location location = block.getLocation();
 			Block blockAtLocation = this.targetWorld.getBlockAt(location);
-			this.currentUndo.put(blockAtLocation);
 			BlockData blockData = block.getBlockData();
 			blockAtLocation.setBlockData(blockData);
 		}
@@ -122,7 +107,6 @@ public class TreeSnipeBrush extends AbstractBrush {
 		@Override
 		public boolean setBlockData(int x, int y, int z, @NotNull BlockData blockData) {
 			Block block = this.targetWorld.getBlockAt(x, y, z);
-			this.currentUndo.put(block);
 			block.setBlockData(blockData);
 			return true;
 		}

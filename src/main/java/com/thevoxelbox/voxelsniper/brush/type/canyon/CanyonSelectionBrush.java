@@ -1,7 +1,5 @@
 package com.thevoxelbox.voxelsniper.brush.type.canyon;
 
-import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import org.bukkit.ChatColor;
@@ -38,14 +36,11 @@ public class CanyonSelectionBrush extends CanyonBrush {
 	}
 
 	private void selection(int lowX, int lowZ, int highX, int highZ, Snipe snipe) {
-		Undo undo = new Undo();
 		for (int x = lowX; x <= highX; x++) {
 			for (int z = lowZ; z <= highZ; z++) {
-				canyon(getWorld().getChunkAt(x, z), undo);
+				canyon(getWorld().getChunkAt(x, z));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override

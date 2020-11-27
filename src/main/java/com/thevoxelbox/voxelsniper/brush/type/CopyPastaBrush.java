@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
@@ -131,7 +130,6 @@ public class CopyPastaBrush extends AbstractBrush {
 	}
 
 	private void doPasta(Snipe snipe) {
-		Undo undo = new Undo();
 		for (int i = 0; i < this.arraySize[0]; i++) {
 			for (int j = 0; j < this.arraySize[1]; j++) {
 				for (int k = 0; k < this.arraySize[2]; k++) {
@@ -153,9 +151,6 @@ public class CopyPastaBrush extends AbstractBrush {
 					}
 					if (!(Materials.isEmpty(this.blockArray[currentPosition]) && !this.pasteAir)) {
 						BlockData blockData = block.getBlockData();
-						if (block.getType() != this.blockArray[currentPosition] || !blockData.equals(this.dataArray[currentPosition])) {
-							undo.put(block);
-						}
 						block.setBlockData(this.dataArray[currentPosition]);
 					}
 				}
@@ -163,8 +158,6 @@ public class CopyPastaBrush extends AbstractBrush {
 		}
 		SnipeMessenger messenger = snipe.createMessenger();
 		messenger.sendMessage(ChatColor.AQUA + String.valueOf(this.numBlocks) + " blocks pasted.");
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override

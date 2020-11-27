@@ -5,6 +5,7 @@ import com.thevoxelbox.voxelsniper.brush.Brush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolAction;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,7 +24,7 @@ public abstract class AbstractBrush implements Brush {
 	public void handleCommand(String[] parameters, Snipe snipe) {
 		Sniper sniper = snipe.getSniper();
 		Player player = sniper.getPlayer();
-		player.sendMessage(ChatColor.RED + "This brush does not accept additional parameters.");
+		Messages.send(player, ChatColor.RED + "This brush does not accept additional parameters.");
 	}
 
 	@Override
@@ -124,6 +125,10 @@ public abstract class AbstractBrush implements Brush {
 
 	public Block getTargetBlock() {
 		return this.targetBlock;
+	}
+
+	public void setTargetBlock(Block targetBlock) {
+		this.targetBlock = targetBlock;
 	}
 
 	/**

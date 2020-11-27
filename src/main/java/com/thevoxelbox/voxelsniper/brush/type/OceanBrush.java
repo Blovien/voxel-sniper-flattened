@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -78,11 +77,8 @@ public class OceanBrush extends AbstractBrush {
 
 	@Override
 	public void handleArrowAction(Snipe snipe) {
-		Undo undo = new Undo();
 		ToolkitProperties toolkitProperties = snipe.getToolkitProperties();
-		oceanator(toolkitProperties, undo);
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
+		oceanator(toolkitProperties);
 	}
 
 	@Override
@@ -90,7 +86,7 @@ public class OceanBrush extends AbstractBrush {
 		handleArrowAction(snipe);
 	}
 
-	private void oceanator(ToolkitProperties toolkitProperties, Undo undo) {
+	private void oceanator(ToolkitProperties toolkitProperties) {
 		World world = getWorld();
 		Block targetBlock = getTargetBlock();
 		int targetBlockX = targetBlock.getX();
@@ -110,7 +106,6 @@ public class OceanBrush extends AbstractBrush {
 				for (int y = highestY; y > newSeaFloorLevel; y--) {
 					Block block = world.getBlockAt(x, y, z);
 					if (block.getType() != Material.AIR) {
-						undo.put(block);
 						block.setType(Material.AIR);
 					}
 				}
@@ -118,10 +113,6 @@ public class OceanBrush extends AbstractBrush {
 				for (int y = this.waterLevel; y > newSeaFloorLevel; y--) {
 					Block block = world.getBlockAt(x, y, z);
 					if (block.getType() != Material.WATER) {
-						// do not put blocks into the undo we already put into
-						if (block.getType() != Material.AIR) {
-							undo.put(block);
-						}
 						block.setType(Material.WATER);
 					}
 				}
@@ -129,7 +120,6 @@ public class OceanBrush extends AbstractBrush {
 				if (this.coverFloor && (newSeaFloorLevel < this.waterLevel)) {
 					Block block = world.getBlockAt(x, newSeaFloorLevel, z);
 					if (block.getType() != toolkitProperties.getBlockType()) {
-						undo.put(block);
 						block.setType(toolkitProperties.getBlockType());
 					}
 				}

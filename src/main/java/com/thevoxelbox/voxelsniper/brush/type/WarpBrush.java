@@ -39,10 +39,11 @@ public class WarpBrush extends AbstractBrush {
 		Location playerLocation = player.getLocation();
 		location.setPitch(playerLocation.getPitch());
 		location.setYaw(playerLocation.getYaw());
-		Fawe.get().getQueueHandler().sync(() -> {//FAWE add
-		getWorld().strikeLightning(location);
-		player.teleport(location);
-		getWorld().strikeLightning(location);
+
+		Fawe.get().getQueueHandler().sync(() -> {
+			getWorld().strikeLightning(location);
+			player.teleport(location);
+			getWorld().strikeLightning(location);
 		});
 	}
 

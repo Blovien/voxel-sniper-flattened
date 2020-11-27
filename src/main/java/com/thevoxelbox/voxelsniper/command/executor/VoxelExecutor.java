@@ -10,6 +10,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.BlockTracer;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.message.Messenger;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -60,7 +61,7 @@ public class VoxelExecutor implements CommandExecutor, TabCompleter {
 			if (targetBlock != null) {
 				Material targetBlockType = targetBlock.getType();
 				if (!sender.hasPermission("voxelsniper.ignorelimitations") && liteSniperRestrictedMaterials.contains(targetBlockType)) {
-					sender.sendMessage("You are not allowed to use " + targetBlockType.name() + ".");
+					Messages.send(sender,"You are not allowed to use " + targetBlockType.name() + ".");
 					return;
 				}
 				toolkitProperties.setBlockType(targetBlockType);
@@ -71,13 +72,13 @@ public class VoxelExecutor implements CommandExecutor, TabCompleter {
 		Material material = Material.matchMaterial(arguments[0]);
 		if (material != null && material.isBlock()) {
 			if (!sender.hasPermission("voxelsniper.ignorelimitations") && liteSniperRestrictedMaterials.contains(material)) {
-				sender.sendMessage("You are not allowed to use " + material.name() + ".");
+				Messages.send(sender,"You are not allowed to use " + material.name() + ".");
 				return;
 			}
 			toolkitProperties.setBlockType(material);
 			messenger.sendBlockTypeMessage(material);
 		} else {
-			sender.sendMessage(ChatColor.RED + "You have entered an invalid Item ID.");
+			Messages.send(sender,ChatColor.RED + "You have entered an invalid Item ID.");
 		}
 	}
 

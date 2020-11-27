@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.brush.property.BrushProperties;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.util.material.MaterialSet;
@@ -143,7 +142,6 @@ public class MoveBrush extends AbstractBrush {
 		if (!blockStates.isEmpty()) {
 			BlockState firstState = blockStates.get(0);
 			World world = firstState.getWorld();
-			Undo undo = new Undo();
 			Selection newSelection = new Selection();
 			Location movedLocation1 = selection.getLocation1();
 			movedLocation1.add(direction[0], direction[1], direction[2]);
@@ -163,8 +161,6 @@ public class MoveBrush extends AbstractBrush {
 				.stream()
 				.map(BlockState::getBlock)
 				.forEach(undoSet::add);
-			undoSet.forEach(undo::put);
-			sniper.storeUndo(undo);
 			blockStates.stream()
 				.map(BlockState::getBlock)
 				.forEach(block -> block.setType(Material.AIR));

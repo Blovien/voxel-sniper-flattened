@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type.canyon;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import org.bukkit.ChatColor;
@@ -37,45 +36,35 @@ public class CanyonBrush extends AbstractBrush {
 
 	@Override
 	public void handleArrowAction(Snipe snipe) {
-		Undo undo = new Undo();
-		canyon(getTargetBlock().getChunk(), undo);
+		canyon(getTargetBlock().getChunk());
 		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override
 	public void handleGunpowderAction(Snipe snipe) {
-		Undo undo = new Undo();
 		Chunk targetChunk = getTargetBlock().getChunk();
 		for (int x = targetChunk.getX() - 1; x <= targetChunk.getX() + 1; x++) {
 			for (int z = targetChunk.getX() - 1; z <= targetChunk.getX() + 1; z++) {
-				canyon(getWorld().getChunkAt(x, z), undo);
+				canyon(getWorld().getChunkAt(x, z));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
-	protected void canyon(Chunk chunk, Undo undo) {
+	protected void canyon(Chunk chunk) {
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
 				int currentYLevel = this.yLevel;
-				for (int y = 63; y < this.getWorld()
-					.getMaxHeight(); y++) {
+				for (int y = 63; y < this.getWorld().getMaxHeight(); y++) {
 					Block block = chunk.getBlock(x, y, z);
 					Block currentYLevelBlock = chunk.getBlock(x, currentYLevel, z);
-					undo.put(block);
-					undo.put(currentYLevelBlock);
 					currentYLevelBlock.setType(block.getType(), false);
 					block.setType(Material.AIR);
 					currentYLevel++;
 				}
 				Block block = chunk.getBlock(x, 0, z);
-				undo.put(block);
 				block.setType(Material.BEDROCK);
 				for (int y = 1; y < SHIFT_LEVEL_MIN; y++) {
 					Block currentBlock = chunk.getBlock(x, y, z);
-					undo.put(currentBlock);
 					currentBlock.setType(Material.STONE);
 				}
 			}

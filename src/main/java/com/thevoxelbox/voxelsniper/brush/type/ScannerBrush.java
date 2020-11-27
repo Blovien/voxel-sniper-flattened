@@ -124,8 +124,7 @@ public class ScannerBrush extends AbstractBrush {
 		} else if (blockFace == BlockFace.DOWN) {// Scan up
 			for (int i = 1; i < this.depth + 1; i++) {
 				Sniper sniper = snipe.getSniper();
-				Player player = sniper.getPlayer();
-				World world = sniper/*player*/.getWorld();//FAWE modified
+				World world = sniper.getWorld();
 				if ((targetBlock.getY() + i) >= world.getMaxHeight()) {
 					break;
 				}

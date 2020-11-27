@@ -1,8 +1,7 @@
 package com.thevoxelbox.voxelsniper.brush.type.blend;
 
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -37,6 +36,8 @@ public class BlendDiscBrush extends AbstractBlendBrush {
 		int largeCircleArea = (int) MathHelper.circleArea(brushSize + 2);
 		Map<BlockVector3, Block> largeCircle = new HashMap<>(largeCircleArea);
 		Block targetBlock = getTargetBlock();
+
+
 		Painters.circle()
 			.center(targetBlock)
 			.radius(brushSize + 2)
@@ -45,9 +46,11 @@ public class BlendDiscBrush extends AbstractBlendBrush {
 				largeCircle.put(position, block);
 			})
 			.paint();
+
 		int smallCircleArea = (int) MathHelper.circleArea(brushSize);
 		Map<BlockVector3, Block> smallCircle = new HashMap<>(smallCircleArea);
 		Map<BlockVector3, Material> smallCircleMaterials = new HashMap<>(smallCircleArea);
+
 		Painters.circle()
 			.center(targetBlock)
 			.radius(brushSize)
@@ -57,6 +60,7 @@ public class BlendDiscBrush extends AbstractBlendBrush {
 				smallCircleMaterials.put(position, block.getType());
 			})
 			.paint();
+
 		for (Block smallCircleBlock : smallCircle.values()) {
 			BlockVector3 blockPosition = Vectors.of(smallCircleBlock);
 			Map<Material, Integer> materialsFrequencies = new EnumMap<>(Material.class);
@@ -78,9 +82,6 @@ public class BlendDiscBrush extends AbstractBlendBrush {
 				smallCircleMaterials.put(blockPosition, material);
 			}
 		}
-		Undo undo = new Undo();
-		setBlocks(smallCircleMaterials, undo);
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
+		setBlocks(smallCircleMaterials);
 	}
 }

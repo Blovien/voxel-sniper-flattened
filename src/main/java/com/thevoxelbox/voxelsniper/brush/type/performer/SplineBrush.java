@@ -159,8 +159,6 @@ public class SplineBrush extends AbstractPerformerBrush {
 		for (Point point : this.spline) {
 			this.performer.perform(clampY(point.getX(), point.getY(), point.getZ()));
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void clear(Snipe snipe) {

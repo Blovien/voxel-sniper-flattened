@@ -1,13 +1,12 @@
 package com.thevoxelbox.voxelsniper.performer.type.combo;
 
-import com.thevoxelbox.voxelsniper.performer.type.AbstractPerformer;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
+import com.thevoxelbox.voxelsniper.performer.Performer;
 import com.thevoxelbox.voxelsniper.sniper.snipe.performer.PerformerSnipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-public class ComboPerformer extends AbstractPerformer {
+public class ComboPerformer implements Performer {
 
 	private BlockData blockData;
 
@@ -19,8 +18,6 @@ public class ComboPerformer extends AbstractPerformer {
 
 	@Override
 	public void perform(Block block) {
-		Undo undo = getUndo();
-		undo.put(block);
 		block.setBlockData(this.blockData);
 	}
 

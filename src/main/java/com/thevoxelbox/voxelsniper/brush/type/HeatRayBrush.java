@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -95,7 +94,6 @@ public class HeatRayBrush extends AbstractBrush {
 		Location targetBlockLocation = targetBlock.getLocation();
 		Vector targetBlockVector = targetBlockLocation.toVector();
 		Location currentLocation = new Location(targetBlock.getWorld(), 0, 0, 0);
-		Undo undo = new Undo();
 		int brushSize = toolkitProperties.getBrushSize();
 		for (int z = brushSize; z >= -brushSize; z--) {
 			for (int x = brushSize; x >= -brushSize; x--) {
@@ -111,12 +109,10 @@ public class HeatRayBrush extends AbstractBrush {
 							continue;
 						}
 						if (currentBlock.isLiquid()) {
-							undo.put(currentBlock);
 							currentBlock.setType(Material.AIR);
 							continue;
 						}
 						if (FLAMEABLE_BLOCKS.contains(currentBlockType)) {
-							undo.put(currentBlock);
 							currentBlock.setType(Material.FIRE);
 							continue;
 						}
@@ -126,22 +122,18 @@ public class HeatRayBrush extends AbstractBrush {
 							double cobbleDensity = generator.noise(currentLocation.getX(), currentLocation.getY(), currentLocation.getZ(), this.octaves, this.frequency, this.amplitude);
 							double obsidianDensity = generator.noise(currentLocation.getX(), currentLocation.getY(), currentLocation.getZ(), this.octaves, this.frequency, this.amplitude);
 							if (obsidianDensity >= REQUIRED_OBSIDIAN_DENSITY) {
-								undo.put(currentBlock);
 								if (currentBlockType != Material.OBSIDIAN) {
 									currentBlock.setType(Material.OBSIDIAN);
 								}
 							} else if (cobbleDensity >= REQUIRED_COBBLE_DENSITY) {
-								undo.put(currentBlock);
 								if (currentBlockType != Material.COBBLESTONE) {
 									currentBlock.setType(Material.COBBLESTONE);
 								}
 							} else if (fireDensity >= REQUIRED_FIRE_DENSITY) {
-								undo.put(currentBlock);
 								if (currentBlockType != Material.FIRE) {
 									currentBlock.setType(Material.FIRE);
 								}
 							} else if (airDensity >= REQUIRED_AIR_DENSITY) {
-								undo.put(currentBlock);
 								currentBlock.setType(Material.AIR);
 							}
 						}
@@ -149,8 +141,6 @@ public class HeatRayBrush extends AbstractBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override

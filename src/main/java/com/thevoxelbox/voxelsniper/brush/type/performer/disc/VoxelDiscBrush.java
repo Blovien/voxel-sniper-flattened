@@ -28,8 +28,6 @@ public class VoxelDiscBrush extends AbstractPerformerBrush {
 				this.performer.perform(targetBlock.getRelative(x, 0, z));
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

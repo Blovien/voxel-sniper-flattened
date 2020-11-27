@@ -1,13 +1,12 @@
 package com.thevoxelbox.voxelsniper.performer.type.material;
 
-import com.thevoxelbox.voxelsniper.performer.type.AbstractPerformer;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
+import com.thevoxelbox.voxelsniper.performer.Performer;
 import com.thevoxelbox.voxelsniper.sniper.snipe.performer.PerformerSnipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-public class MaterialPerformer extends AbstractPerformer {
+public class MaterialPerformer implements Performer {
 
 	private Material material;
 
@@ -20,8 +19,6 @@ public class MaterialPerformer extends AbstractPerformer {
 	@Override
 	public void perform(Block block) {
 		if (block.getType() != this.material) {
-			Undo undo = getUndo();
-			undo.put(block);
 			block.setType(this.material);
 		}
 	}

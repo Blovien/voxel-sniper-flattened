@@ -2,7 +2,6 @@ package com.thevoxelbox.voxelsniper.brush.type.shell;
 
 import com.thevoxelbox.voxelsniper.brush.type.AbstractBrush;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -83,16 +82,12 @@ public class ShellSetBrush extends AbstractBrush {
 						}
 					}
 				}
-				Undo undo = new Undo();
 				for (Block currentBlock : blocks) {
 					Material blockType = toolkitProperties.getBlockType();
 					if (currentBlock.getType() != blockType) {
-						undo.put(currentBlock);
 						currentBlock.setType(blockType);
 					}
 				}
-				Sniper sniper = snipe.getSniper();
-				sniper.storeUndo(undo);
 				messenger.sendMessage(ChatColor.AQUA + "Shell complete.");
 			}
 			this.block = null;

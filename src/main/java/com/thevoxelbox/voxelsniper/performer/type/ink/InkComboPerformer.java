@@ -1,13 +1,12 @@
 package com.thevoxelbox.voxelsniper.performer.type.ink;
 
-import com.thevoxelbox.voxelsniper.performer.type.AbstractPerformer;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
+import com.thevoxelbox.voxelsniper.performer.Performer;
 import com.thevoxelbox.voxelsniper.sniper.snipe.performer.PerformerSnipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-public class InkComboPerformer extends AbstractPerformer {
+public class InkComboPerformer implements Performer {
 
 	private BlockData blockData;
 	private BlockData replaceBlockData;
@@ -23,8 +22,6 @@ public class InkComboPerformer extends AbstractPerformer {
 	public void perform(Block block) {
 		BlockData blockData = block.getBlockData();
 		if (blockData.equals(this.replaceBlockData)) {
-			Undo undo = getUndo();
-			undo.put(block);
 			block.setBlockData(this.blockData);
 		}
 	}

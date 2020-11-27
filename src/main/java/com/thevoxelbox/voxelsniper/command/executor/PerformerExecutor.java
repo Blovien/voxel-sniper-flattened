@@ -11,6 +11,7 @@ import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,7 +42,7 @@ public class PerformerExecutor implements CommandExecutor {
 		BrushProperties brushProperties = toolkit.getCurrentBrushProperties();
 		Brush brush = toolkit.getCurrentBrush();
 		if (!(brush instanceof PerformerBrush)) {
-			sender.sendMessage("This brush is not a performer brush.");
+			Messages.send(sender,"This brush is not a performer brush.");
 			return;
 		}
 		PerformerBrush performer = (PerformerBrush) brush;

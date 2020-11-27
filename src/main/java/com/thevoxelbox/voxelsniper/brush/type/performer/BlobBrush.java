@@ -124,8 +124,6 @@ public class BlobBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private void growBlob(Snipe snipe) {
@@ -195,8 +193,6 @@ public class BlobBrush extends AbstractPerformerBrush {
 				}
 			}
 		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	private boolean checkValidGrowPercent() {

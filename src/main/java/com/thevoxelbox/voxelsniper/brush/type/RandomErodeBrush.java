@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -153,7 +152,6 @@ public class RandomErodeBrush extends AbstractBrush {
 	}
 
 	private void randomErosion(Snipe snipe) {
-		Undo undo = new Undo();
 		if (this.erodeFace >= 0 && this.erodeFace <= 6) {
 			for (int currentErodeRecursion = 0; currentErodeRecursion < this.erodeRecursion; currentErodeRecursion++) {
 				getMatrix();
@@ -194,22 +192,9 @@ public class RandomErodeBrush extends AbstractBrush {
 				}
 			}
 		}
-		for (BlockWrapper[][] firstSnapSlice : this.firstSnap) {
-			for (BlockWrapper[] firstSnapString : firstSnapSlice) {
-				for (BlockWrapper block : firstSnapString) {
-					Block nativeBlock = block.getNativeBlock();
-					if (block.getNativeType() != nativeBlock.getType()) {
-						undo.put(nativeBlock);
-					}
-				}
-			}
-		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	private void randomFilling(Snipe snipe) {
-		Undo undo = new Undo();
 		if (this.fillFace >= 0 && this.fillFace <= 6) {
 			double bSquared = Math.pow(this.brushSize + 0.5, 2);
 			for (int currentFillRecursion = 0; currentFillRecursion < this.fillRecursion; currentFillRecursion++) {
@@ -250,18 +235,6 @@ public class RandomErodeBrush extends AbstractBrush {
 				}
 			}
 		}
-		for (BlockWrapper[][] firstSnapSlice : this.firstSnap) {
-			for (BlockWrapper[] firstSnapString : firstSnapSlice) {
-				for (BlockWrapper block : firstSnapString) {
-					Block nativeBlock = block.getNativeBlock();
-					if (block.getNativeType() != nativeBlock.getType()) {
-						undo.put(nativeBlock);
-					}
-				}
-			}
-		}
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(undo);
 	}
 
 	@Override

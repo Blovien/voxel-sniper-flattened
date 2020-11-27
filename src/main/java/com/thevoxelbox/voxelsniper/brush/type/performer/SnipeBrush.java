@@ -11,16 +11,12 @@ public class SnipeBrush extends AbstractPerformerBrush {
 	public void handleArrowAction(Snipe snipe) {
 		Block targetBlock = getTargetBlock();
 		this.performer.perform(targetBlock);
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override
 	public void handleGunpowderAction(Snipe snipe) {
 		Block lastBlock = getLastBlock();
 		this.performer.perform(lastBlock);
-		Sniper sniper = snipe.getSniper();
-		sniper.storeUndo(this.performer.getUndo());
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolAction;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -120,9 +121,8 @@ public class Sniper {
 	 * @param clickedBlockFace Face of that targeted Block
 	 * @return true if command visibly processed, false otherwise.
 	 */
-	//FAWE MODIFIED
 	public boolean snipe(Player player, Action action, Material usedItem, @Nullable Block clickedBlock, BlockFace clickedBlockFace) {
-		{ //FAWE ADDED
+		{
 			switch (action) {
 				case LEFT_CLICK_AIR:
 				case LEFT_CLICK_BLOCK:
@@ -147,10 +147,10 @@ public class Sniper {
 		BrushProperties currentBrushProperties = toolkit.getCurrentBrushProperties();
 		String permission = currentBrushProperties.getPermission();
 		if (permission != null && !player.hasPermission(permission)) {
-			player.sendMessage("You are not allowed to use this brush. You're missing the permission node '" + permission + "'");
+			Messages.send(player, ChatColor.RED + "You are not allowed to use this brush. You're missing the permission node '" + permission + "'");
 			return false;
 		}
-		{ //FAWE ADDED
+		{
 			BukkitPlayer wePlayer = BukkitAdapter.adapt(player);
 			LocalSession session = wePlayer.getSession();
 			QueueHandler queue = Fawe.get().getQueueHandler();
@@ -171,168 +171,136 @@ public class Sniper {
 	}
 
 	public synchronized boolean snipeOnCurrentThread(com.sk89q.worldedit.entity.Player fp, Player player, Action action, Material usedItem, @Nullable Block clickedBlock, BlockFace clickedBlockFace, Toolkit toolkit, ToolAction toolAction, BrushProperties currentBrushProperties) {
-		LocalSession session = fp.getSession(); //FAWE add
-		synchronized (session) {//FAWE add
-		EditSession editSession = session.createEditSession(fp); //FAWE add
-		World world = BukkitAdapter.adapt(editSession.getWorld()); //FAWE add
-		AsyncWorld asyncWorld = new AsyncWorld(world, editSession); //FAWE add
-		this.tmpWorld = asyncWorld;
+		LocalSession session = fp.getSession();
+		synchronized (session) {
+			EditSession editSession = session.createEditSession(fp);
+			World world = BukkitAdapter.adapt(editSession.getWorld());
+			AsyncWorld asyncWorld = new AsyncWorld(world, editSession);
+			this.tmpWorld = asyncWorld;
 
-		if (clickedBlock != null) {
-			clickedBlock = asyncWorld.getBlockAt(clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
-		}
-		try {//FAWE ADD
-		ToolkitProperties toolkitProperties = toolkit.getProperties();
-		BlockTracer blockTracer = toolkitProperties.createBlockTracer(player);
-		{//FAWE add
-			Request.reset();
-			Request.request().setExtent(editSession);
-			if (clickedBlock == null) {
-				@NotNull Location loc = player.getLocation();
-				int distance = toolkitProperties.getBlockTracerRange() == null ? Math.max(Bukkit.getViewDistance(), 3) * 16 - toolkitProperties.getBrushSize() : toolkitProperties.getBlockTracerRange();
-				BlockIterator iterator = new BlockIterator(asyncWorld, loc.toVector(), loc.getDirection(), player.getEyeHeight(), distance);
-				outer:
-				while (iterator.hasNext()) {
-					clickedBlock = iterator.next();
-					@NotNull Material type = clickedBlock.getType();
-					switch (type) {
-						case AIR:
-						case CAVE_AIR:
-						case VOID_AIR:
-							break;
-						default:
-							break outer;
-					}
-				}
+			if (clickedBlock != null) {
+				clickedBlock = asyncWorld.getBlockAt(clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
 			}
+			try {
+			ToolkitProperties toolkitProperties = toolkit.getProperties();
+			BlockTracer blockTracer = toolkitProperties.createBlockTracer(player);
+			{
+				Request.reset();
+				Request.request().setExtent(editSession);
+				if (clickedBlock == null) {
+					@NotNull Location loc = player.getLocation();
+					int distance = toolkitProperties.getBlockTracerRange() == null ? Math.max(Bukkit.getViewDistance(), 3) * 16 - toolkitProperties.getBrushSize() : toolkitProperties.getBlockTracerRange();
+					BlockIterator iterator = new BlockIterator(asyncWorld, loc.toVector(), loc.getDirection(), player.getEyeHeight(), distance);
+					outer:
+					while (iterator.hasNext()) {
+						clickedBlock = iterator.next();
+						@NotNull Material type = clickedBlock.getType();
+						switch (type) {
+							case AIR:
+							case CAVE_AIR:
+							case VOID_AIR:
+								break;
+							default:
+								break outer;
+						}
+					}
+				}
 		}
-		Block targetBlock = clickedBlock == null ? blockTracer.getTargetBlock() : clickedBlock;
-		if (player.isSneaking()) {
-			SnipeMessenger messenger = new SnipeMessenger(toolkitProperties, currentBrushProperties, player);
-			if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
-				if (toolAction == ToolAction.ARROW) {
-					if (Materials.isEmpty(targetBlock.getType())) {
-						toolkitProperties.resetBlockData();
-					} else {
-						Material type = targetBlock.getType();
-						toolkitProperties.setBlockType(type);
+			Block targetBlock = clickedBlock == null ? blockTracer.getTargetBlock() : clickedBlock;
+			if (player.isSneaking()) {
+				SnipeMessenger messenger = new SnipeMessenger(toolkitProperties, currentBrushProperties, player);
+				if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+					if (toolAction == ToolAction.ARROW) {
+						if (Materials.isEmpty(targetBlock.getType())) {
+							toolkitProperties.resetBlockData();
+						} else {
+							Material type = targetBlock.getType();
+							toolkitProperties.setBlockType(type);
+						}
+						messenger.sendBlockTypeMessage();
+						return true;
+					} else if (toolAction == ToolAction.GUNPOWDER) {
+						if (Materials.isEmpty(targetBlock.getType())) {
+							toolkitProperties.resetBlockData();
+						} else {
+							BlockData blockData = targetBlock.getBlockData();
+							toolkitProperties.setBlockData(blockData);
+						}
+						messenger.sendBlockDataMessage();
+						return true;
 					}
-					messenger.sendBlockTypeMessage();
-					return true;
-				} else if (toolAction == ToolAction.GUNPOWDER) {
-					if (Materials.isEmpty(targetBlock.getType())) {
-						toolkitProperties.resetBlockData();
-					} else {
-						BlockData blockData = targetBlock.getBlockData();
-						toolkitProperties.setBlockData(blockData);
+					return false;
+				} else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+					if (toolAction == ToolAction.ARROW) {
+						if (targetBlock == null) {
+							toolkitProperties.resetReplaceBlockData();
+						} else {
+							Material type = targetBlock.getType();
+							toolkitProperties.setReplaceBlockType(type);
+						}
+						messenger.sendReplaceBlockTypeMessage();
+						return true;
+					} else if (toolAction == ToolAction.GUNPOWDER) {
+						if (targetBlock == null) {
+							toolkitProperties.resetReplaceBlockData();
+						} else {
+							BlockData blockData = targetBlock.getBlockData();
+							toolkitProperties.setReplaceBlockData(blockData);
+						}
+						messenger.sendReplaceBlockDataMessage();
+						return true;
 					}
-					messenger.sendBlockDataMessage();
-					return true;
-				}
-				return false;
-			} else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
-				if (toolAction == ToolAction.ARROW) {
-					if (targetBlock == null) {
-						toolkitProperties.resetReplaceBlockData();
-					} else {
-						Material type = targetBlock.getType();
-						toolkitProperties.setReplaceBlockType(type);
-					}
-					messenger.sendReplaceBlockTypeMessage();
-					return true;
-				} else if (toolAction == ToolAction.GUNPOWDER) {
-					if (targetBlock == null) {
-						toolkitProperties.resetReplaceBlockData();
-					} else {
-						BlockData blockData = targetBlock.getBlockData();
-						toolkitProperties.setReplaceBlockData(blockData);
-					}
-					messenger.sendReplaceBlockDataMessage();
-					return true;
-				}
-				return false;
-			}
-			return false;
-		} else {
-			if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-				if (Materials.isEmpty(targetBlock.getType())) {
-					player.sendMessage(ChatColor.RED + "Snipe target block must be visible.");
-					return true;
-				}
-				Brush currentBrush = toolkit.getCurrentBrush();
-				if (currentBrush == null) {
 					return false;
 				}
-				Snipe snipe = new Snipe(this, toolkit, toolkitProperties, currentBrushProperties, currentBrush);
-				if (currentBrush instanceof PerformerBrush) {
-					PerformerBrush performerBrush = (PerformerBrush) currentBrush;
-					performerBrush.initialize(snipe);
+				return false;
+			} else {
+				if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+					if (Materials.isEmpty(targetBlock.getType())) {
+						Messages.send(player,ChatColor.RED + "Snipe target block must be visible.");
+						return true;
+					}
+					Brush currentBrush = toolkit.getCurrentBrush();
+					if (currentBrush == null) {
+						return false;
+					}
+					Snipe snipe = new Snipe(this, toolkit, toolkitProperties, currentBrushProperties, currentBrush);
+					if (currentBrush instanceof PerformerBrush) {
+						PerformerBrush performerBrush = (PerformerBrush) currentBrush;
+						performerBrush.initialize(snipe);
+					}
+					Block lastBlock = clickedBlock == null ? blockTracer.getLastBlock() : clickedBlock.getRelative(clickedBlockFace);
+					currentBrush.perform(snipe, toolAction, targetBlock, lastBlock);
+					return true;
 				}
-				Block lastBlock = clickedBlock == null ? blockTracer.getLastBlock() : clickedBlock.getRelative(clickedBlockFace);
-				currentBrush.perform(snipe, toolAction, targetBlock, lastBlock);
-				return true;
+			}
+			return false;
+			}
+			finally {
+				tmpWorld = null;
+				session.remember(editSession);
+				editSession.flushQueue();
+				WorldEdit.getInstance().flushBlockBag(fp, editSession);
 			}
 		}
-		return false;
-		}
-		finally { //FAWE ADD
-			tmpWorld = null;
-			session.remember(editSession);
-			editSession.flushQueue();
-			WorldEdit.getInstance().flushBlockBag(fp, editSession);
-		}
-		}
 	}
 
-	//FAWE Modified
-	public void storeUndo(Undo undo) {
-		/* //FAWE removed
-		if (this.undoCacheSize <= 0) {
-			return;
-		}
-		if (undo.isEmpty()) {
-			return;
-		}
-		while (this.undoList.size() >= this.undoCacheSize) {
-			this.undoList.pollLast();
-		}
-		this.undoList.push(undo);
-		*/
-	}
-
-	//FAWE  Modified
 	public void undo(CommandSender sender, int amount) {
-		{ //FAWE add
-			com.sk89q.worldedit.entity.Player actor = (com.sk89q.worldedit.entity.Player) WorldEditPlugin.getInstance().wrapCommandSender(sender);
-			LocalSession session = actor.getSession();
-			new HistoryCommands(WorldEdit.getInstance()).undo(actor, session, amount, null);
-		}
-		/* //FAWE modified
-		if (this.undoList.isEmpty()) {
-			sender.sendMessage(ChatColor.GREEN + "There's nothing to undo.");
-			return;
-		}
-		int sum = 0;
-		for (int index = 0; index < amount && !this.undoList.isEmpty(); index++) {
-			Undo undo = this.undoList.pop();
-			undo.undo();
-			sum += undo.getSize();
-		}
-		sender.sendMessage(ChatColor.GREEN + "Undo successful:  " + ChatColor.RED + sum + ChatColor.GREEN + " blocks have been replaced.");
-		*/
+		com.sk89q.worldedit.entity.Player actor = (com.sk89q.worldedit.entity.Player) WorldEditPlugin.getInstance().wrapCommandSender(sender);
+		LocalSession session = actor.getSession();
+		new HistoryCommands(WorldEdit.getInstance()).undo(actor, session, amount, null);
 	}
 
 	public void sendInfo(CommandSender sender) {
 		Toolkit toolkit = getCurrentToolkit();
 		if (toolkit == null) {
-			sender.sendMessage("Current toolkit: none");
+			Messages.send(sender, "Current toolkit: none");
 			return;
 		}
-		sender.sendMessage("Current toolkit: " + toolkit.getToolkitName());
+		Messages.send(sender, "Current toolkit: " + toolkit.getToolkitName());
 		BrushProperties brushProperties = toolkit.getCurrentBrushProperties();
 		Brush brush = toolkit.getCurrentBrush();
 		if (brush == null) {
-			sender.sendMessage("No brush selected.");
+			Messages.send(sender, "No brush selected.");
 			return;
 		}
 		ToolkitProperties toolkitProperties = toolkit.getProperties();

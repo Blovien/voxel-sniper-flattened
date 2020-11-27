@@ -1,7 +1,6 @@
 package com.thevoxelbox.voxelsniper.brush.type;
 
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
-import com.thevoxelbox.voxelsniper.sniper.Undo;
 import com.thevoxelbox.voxelsniper.sniper.snipe.Snipe;
 import com.thevoxelbox.voxelsniper.sniper.snipe.message.SnipeMessenger;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
@@ -60,14 +59,10 @@ public class RulerBrush extends AbstractBrush {
 			messenger.sendMessage(ChatColor.DARK_PURPLE + "First point selected.");
 			this.first = !this.first;
 		} else {
-			Undo undo = new Undo();
 			int x = targetBlock.getX();
 			int y = targetBlock.getY();
 			int z = targetBlock.getZ();
-			undo.put(clampY(x + this.offsetX, y + this.offsetY, z + this.offsetZ));
 			setBlockType(x + this.offsetX, y + this.offsetY, z + this.offsetZ, blockDataType);
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(undo);
 		}
 	}
 

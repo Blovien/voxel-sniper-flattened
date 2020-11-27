@@ -1,5 +1,6 @@
 package com.thevoxelbox.voxelsniper.util.message;
 
+import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -69,6 +70,7 @@ public class Messenger {
 	}
 
 	public void sendMessage(String message) {
-		this.sender.sendMessage(message);
+		//this.sender.sendMessage(message);
+		Messages.send(sender, message);
 	}
 }

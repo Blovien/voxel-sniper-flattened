@@ -64,6 +64,7 @@ public class SpherePainter implements Painter {
 		Painters.block(this)
 			.at(0, 0, 0)
 			.paint();
+
 		double radiusSquared = MathHelper.square(this.trueCircle ? this.radius + TRUE_CIRCLE_ADDITIONAL_RADIUS : this.radius);
 		for (int first = 1; first <= this.radius; first++) {
 			Painters.block(this)
@@ -74,6 +75,7 @@ public class SpherePainter implements Painter {
 				.at(0, 0, first)
 				.at(0, 0, -first)
 				.paint();
+
 			double firstSquared = MathHelper.square(first);
 			for (int second = 1; second <= this.radius; second++) {
 				double secondSquared = MathHelper.square(second);

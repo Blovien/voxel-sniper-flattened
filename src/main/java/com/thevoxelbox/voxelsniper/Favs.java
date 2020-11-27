@@ -21,7 +21,22 @@ public class Favs {
     public Favs(JavaPlugin plugin) {
         this.plugin = (VoxelSniperPlugin) plugin;
         try {
-            this.initFavs();
+			setupCommand("/p", (sender, command, label, args) -> {
+				if (sender instanceof Player && sender.hasPermission("voxelsniper.sniper")) {
+					Player player = (Player) sender;
+					@Nullable PluginCommand cmd = plugin.getCommand("p");
+					plugin.onCommand(player, cmd, label, args);
+				}
+				return false;
+			});
+			setupCommand("/d", (sender, command, label, args) -> {
+				if (sender instanceof Player && sender.hasPermission("voxelsniper.sniper")) {
+					Player player = (Player) sender;
+					@Nullable PluginCommand cmd = plugin.getCommand("d");
+					plugin.onCommand(player, cmd, label, args);
+				}
+				return false;
+			});
         } catch (Throwable ignore) {}
     }
 
@@ -41,32 +56,6 @@ public class Favs {
                 } catch (Throwable ignore) {}
             }
         }
-    }
-
-    public void initFavs() {
-
-        setupCommand("/p", new CommandExecutor() {
-            @Override
-            public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-                if (sender instanceof Player && sender.hasPermission("voxelsniper.sniper")) {
-                    Player player = (Player) sender;
-                    @Nullable PluginCommand cmd = plugin.getCommand("p");
-                    plugin.onCommand(sender, cmd, label, args);
-                }
-                return false;
-            }
-        });
-        setupCommand("/d", new CommandExecutor() {
-            @Override
-            public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-                if (sender instanceof Player && sender.hasPermission("voxelsniper.sniper")) {
-                    Player player = (Player) sender;
-                    @Nullable PluginCommand cmd = plugin.getCommand("d");
-                    plugin.onCommand(sender, cmd, label, args);
-                }
-                return false;
-            }
-        });
     }
 
     public void setupCommand(final String label, final CommandExecutor cmd) {

@@ -17,8 +17,7 @@ public class BlockPainter implements Painter {
 	}
 
 	public BlockPainter at(int xShift, int yShift, int zShift) {
-		BlockVector3 shift = BlockVector3.at(xShift, yShift, zShift);
-		return at(shift);
+		return at(BlockVector3.at(xShift, yShift, zShift));
 	}
 
 	public BlockPainter at(BlockVector3 shift) {

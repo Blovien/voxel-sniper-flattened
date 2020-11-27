@@ -8,8 +8,6 @@ import org.bukkit.block.Block;
 
 public class CirclePainter implements Painter {
 
-	private static final double TRUE_CIRCLE_ADDITIONAL_RADIUS = 0.5;
-
 	private BlockVector3 center;
 	private int radius;
 	private boolean trueCircle;
@@ -61,10 +59,12 @@ public class CirclePainter implements Painter {
 	}
 
 	private void paintSphere() {
+
 		Painters.block(this)
 			.at(0, 0, 0)
 			.paint();
-		double radiusSquared = MathHelper.square(this.trueCircle ? this.radius + TRUE_CIRCLE_ADDITIONAL_RADIUS : this.radius);
+
+		double radiusSquared = MathHelper.square(this.trueCircle ? this.radius + 0.5 : this.radius);
 		for (int first = 1; first <= this.radius; first++) {
 			Painters.block(this)
 				.at(first, 0, 0)

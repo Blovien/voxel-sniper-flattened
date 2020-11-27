@@ -21,9 +21,6 @@ public class SetBrush extends AbstractPerformerBrush {
 		if (set(targetBlock, snipe)) {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.GRAY + "Point one");
-		} else {
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(this.performer.getUndo());
 		}
 	}
 
@@ -33,9 +30,6 @@ public class SetBrush extends AbstractPerformerBrush {
 		if (set(lastBlock, snipe)) {
 			SnipeMessenger messenger = snipe.createMessenger();
 			messenger.sendMessage(ChatColor.GRAY + "Point one");
-		} else {
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(this.performer.getUndo());
 		}
 	}
 

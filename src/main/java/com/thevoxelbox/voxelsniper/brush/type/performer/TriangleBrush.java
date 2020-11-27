@@ -124,8 +124,6 @@ public class TriangleBrush extends AbstractPerformerBrush {
 			perform(brushSize, planeConstant, heronBig, cVectorOne, cVectorTwo, cVectorThree, 1, 2, 0);
 			perform(brushSize, planeConstant, heronBig, cVectorOne, cVectorTwo, cVectorThree, 0, 2, 1);
 			perform(brushSize, planeConstant, heronBig, cVectorOne, cVectorTwo, cVectorThree, 0, 1, 2);
-			Sniper sniper = snipe.getSniper();
-			sniper.storeUndo(this.performer.getUndo());
 		}
 		// reset brush
 		this.coordinatesOne[0] = 0;
