@@ -1,8 +1,10 @@
 package com.thevoxelbox.voxelsniper.sniper;
 
 import com.boydti.fawe.Fawe;
+import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.beta.implementation.queue.QueueHandler;
 import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
+import com.boydti.fawe.object.RelightMode;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -10,7 +12,8 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.command.HistoryCommands;
-import com.sk89q.worldedit.extension.platform.Actor;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.factory.SphereRegionFactory;
 import com.sk89q.worldedit.session.request.Request;
 import com.thevoxelbox.voxelsniper.brush.Brush;
 import com.thevoxelbox.voxelsniper.brush.PerformerBrush;
@@ -23,11 +26,7 @@ import com.thevoxelbox.voxelsniper.sniper.toolkit.Toolkit;
 import com.thevoxelbox.voxelsniper.sniper.toolkit.ToolkitProperties;
 import com.thevoxelbox.voxelsniper.util.material.Materials;
 import it.blovien.betterbrushes.Messages;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -41,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import java.util.UUID;
 
@@ -170,6 +168,7 @@ public class Sniper {
 		return tmpWorld;
 	}
 
+	@SuppressWarnings("deprecation")
 	public synchronized boolean snipeOnCurrentThread(com.sk89q.worldedit.entity.Player fp, Player player, Action action, Material usedItem, @Nullable Block clickedBlock, BlockFace clickedBlockFace, Toolkit toolkit, ToolAction toolAction, BrushProperties currentBrushProperties) {
 		LocalSession session = fp.getSession();
 		synchronized (session) {
@@ -182,30 +181,30 @@ public class Sniper {
 				clickedBlock = asyncWorld.getBlockAt(clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
 			}
 			try {
-			ToolkitProperties toolkitProperties = toolkit.getProperties();
-			BlockTracer blockTracer = toolkitProperties.createBlockTracer(player);
-			{
-				Request.reset();
-				Request.request().setExtent(editSession);
-				if (clickedBlock == null) {
-					@NotNull Location loc = player.getLocation();
-					int distance = toolkitProperties.getBlockTracerRange() == null ? Math.max(Bukkit.getViewDistance(), 3) * 16 - toolkitProperties.getBrushSize() : toolkitProperties.getBlockTracerRange();
-					BlockIterator iterator = new BlockIterator(asyncWorld, loc.toVector(), loc.getDirection(), player.getEyeHeight(), distance);
-					outer:
-					while (iterator.hasNext()) {
-						clickedBlock = iterator.next();
-						@NotNull Material type = clickedBlock.getType();
-						switch (type) {
-							case AIR:
-							case CAVE_AIR:
-							case VOID_AIR:
-								break;
-							default:
-								break outer;
+				ToolkitProperties toolkitProperties = toolkit.getProperties();
+				BlockTracer blockTracer = toolkitProperties.createBlockTracer(player);
+				{
+					Request.reset();
+					Request.request().setExtent(editSession);
+					if (clickedBlock == null) {
+						@NotNull Location loc = player.getLocation();
+						int distance = toolkitProperties.getBlockTracerRange() == null ? Math.max(Bukkit.getViewDistance(), 3) * 16 - toolkitProperties.getBrushSize() : toolkitProperties.getBlockTracerRange();
+						BlockIterator iterator = new BlockIterator(asyncWorld, loc.toVector(), loc.getDirection(), player.getEyeHeight(), distance);
+						outer:
+						while (iterator.hasNext()) {
+							clickedBlock = iterator.next();
+							@NotNull Material type = clickedBlock.getType();
+							switch (type) {
+								case AIR:
+								case CAVE_AIR:
+								case VOID_AIR:
+									break;
+								default:
+									break outer;
+							}
 						}
 					}
 				}
-		}
 			Block targetBlock = clickedBlock == null ? blockTracer.getTargetBlock() : clickedBlock;
 			if (player.isSneaking()) {
 				SnipeMessenger messenger = new SnipeMessenger(toolkitProperties, currentBrushProperties, player);

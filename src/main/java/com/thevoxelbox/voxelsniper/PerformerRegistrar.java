@@ -56,7 +56,6 @@ public class PerformerRegistrar {
 		registerMaterialPerformers();
 		registerInkPerformers();
 		registerComboPerformers();
-
 		registerBiomePerformer();
 	}
 

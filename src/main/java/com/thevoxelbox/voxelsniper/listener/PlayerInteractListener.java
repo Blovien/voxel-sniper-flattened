@@ -1,5 +1,10 @@
 package com.thevoxelbox.voxelsniper.listener;
 
+import com.boydti.fawe.FaweAPI;
+import com.boydti.fawe.object.RelightMode;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.factory.SphereRegionFactory;
 import com.thevoxelbox.voxelsniper.VoxelSniperPlugin;
 import com.thevoxelbox.voxelsniper.sniper.Sniper;
 import com.thevoxelbox.voxelsniper.sniper.SniperRegistry;
@@ -23,9 +28,10 @@ public class PlayerInteractListener implements Listener<PlayerInteractEvent> {
 	@Override
 	public void listen(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		if (!player.hasPermission("voxelsniper.sniper")) {
+
+		if (!player.hasPermission("voxelsniper.sniper"))
 			return;
-		}
+
 		SniperRegistry sniperRegistry = this.plugin.getSniperRegistry();
 		Sniper sniper = sniperRegistry.getSniper(player);
 		if (sniper == null) {

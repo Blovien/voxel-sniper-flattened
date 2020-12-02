@@ -94,7 +94,6 @@ public class BrushExecutor implements CommandExecutor, TabCompleter {
 				PerformerBrush performerBrush = (PerformerBrush) brush;
 				performerBrush.handleCommand(parameters, snipe);
 			} else {
-				//parameters[0] = ""; //hackTheArray(Arrays.copyOfRange(arguments, 1, arguments.length));
 				brush.handleCommand(parameters, snipe);
 			}
 			return;

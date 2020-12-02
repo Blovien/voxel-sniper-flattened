@@ -13,15 +13,13 @@ import com.thevoxelbox.voxelsniper.util.message.Messenger;
 import it.blovien.betterbrushes.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -29,6 +27,10 @@ import java.util.stream.Stream;
 public class BiomeExecutor implements CommandExecutor, TabCompleter {
 
 	private VoxelSniperPlugin plugin;
+
+	List<NamespacedKey> BIOME_KEYS = Arrays.stream(Biome.values())
+		.map(Biome::getKey)
+		.collect(Collectors.toList());
 
 	public BiomeExecutor(VoxelSniperPlugin plugin) {
 		this.plugin = plugin;
@@ -73,11 +75,14 @@ public class BiomeExecutor implements CommandExecutor, TabCompleter {
 		if (arguments.length == 1) {
 			String argument = arguments[0];
 			String argumentLowered = argument.toLowerCase();
-			return Stream.of(Arrays.toString(Biome.values()))
-				.filter(biome -> biome.startsWith(argumentLowered))
+			return BIOME_KEYS.stream()
+				.filter(namespacedKey -> {
+					String key = namespacedKey.getKey();
+					return key.startsWith(argumentLowered);
+				})
+				.map(NamespacedKey::toString)
 				.collect(Collectors.toList());
 		}
-
 		return Collections.emptyList();
 	}
 }

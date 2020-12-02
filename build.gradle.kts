@@ -29,7 +29,7 @@ dependencies {
 //	compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
 	compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
 	compileOnly("org.jetbrains:annotations:18.0.0")
-	"implementation"("name:FastAsyncWorldEdit-unspecified")
+	"implementation"("name:FastAsyncWorldEdit-lib")
 }
 
 migleBukkit {
@@ -37,6 +37,7 @@ migleBukkit {
 	name = "VoxelSniper"
 	apiVersion = ApiVersion.VERSION_1_13
 	authors = listOf("Blovien", "Empire92", "przerwap", "MikeMatrix", "Gavjenks", "giltwist", "psanker", "Deamon5550", "DivineRage", "pitcer", "jaqobb")
-	website = "https://github.com/IntellectualSites/voxel-sniper-flattened"
+	website = "https://github.com/Blovien/voxel-sniper-flattened"
+	depend = listOf("FastAsyncWorldEdit")
 //	softDepend = listOf("VoxelModPackPlugin")
 }

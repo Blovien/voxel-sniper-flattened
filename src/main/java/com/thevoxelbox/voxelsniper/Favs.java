@@ -2,15 +2,12 @@ package com.thevoxelbox.voxelsniper;
 
 import com.boydti.fawe.Fawe;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
@@ -18,9 +15,11 @@ import java.lang.reflect.Method;
 public class Favs {
     private final VoxelSniperPlugin plugin;
 
-    public Favs(JavaPlugin plugin) {
+    @SuppressWarnings("ConstantConditions")
+	public Favs(JavaPlugin plugin) {
         this.plugin = (VoxelSniperPlugin) plugin;
         try {
+
 			setupCommand("/p", (sender, command, label, args) -> {
 				if (sender instanceof Player && sender.hasPermission("voxelsniper.sniper")) {
 					Player player = (Player) sender;
@@ -58,7 +57,8 @@ public class Favs {
         }
     }
 
-    public void setupCommand(final String label, final CommandExecutor cmd) {
+    @SuppressWarnings("ConstantConditions")
+	public void setupCommand(final String label, final CommandExecutor cmd) {
         plugin.getCommand(label).setExecutor(cmd);
     }
 }
