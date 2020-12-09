@@ -7,7 +7,7 @@ plugins {
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = sourceCompatibility
 }
 
 repositories {
@@ -18,26 +18,22 @@ repositories {
 			includeGroup("net.md-5")
 		}
 	}
-	flatDir {
-		dirs("libs")
-	}
+	maven { url = uri("https://mvn.intellectualsites.com/content/repositories/releases/") }
 }
 
 dependencies {
 //	implementation("net.mcparkour:common-math:1.0.0")
 //	implementation("net.mcparkour:common-text:1.0.0")
-//	compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
 	compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-	compileOnly("org.jetbrains:annotations:18.0.0")
-	"implementation"("name:FastAsyncWorldEdit-lib")
+	compileOnly("org.jetbrains:annotations:20.1.0")
+	implementation("com.intellectualsites.fawe:FAWE-Bukkit:1.16-448")
 }
 
 migleBukkit {
 	main = "com.thevoxelbox.voxelsniper.VoxelSniperPlugin"
 	name = "VoxelSniper"
 	apiVersion = ApiVersion.VERSION_1_13
-	authors = listOf("Blovien", "Empire92", "przerwap", "MikeMatrix", "Gavjenks", "giltwist", "psanker", "Deamon5550", "DivineRage", "pitcer", "jaqobb")
-	website = "https://github.com/Blovien/voxel-sniper-flattened"
-	depend = listOf("FastAsyncWorldEdit")
-//	softDepend = listOf("VoxelModPackPlugin")
+	authors = listOf("Empire92", "przerwap", "MikeMatrix", "Gavjenks", "giltwist", "psanker", "Deamon5550", "DivineRage", "pitcer", "jaqobb")
+	website = "https://github.com/IntellectualSites/voxel-sniper-flattened"
+	softDepend = listOf("VoxelModPackPlugin")
 }
